@@ -10,6 +10,10 @@ server.get("/", (req, res) => {
   res.status(200).json("Server is up");
 });
 
+server.get("/testing", (req, res) => {
+  res.status(200).json("TEst");
+});
+
 server.listen(PORT, () => {
   console.log(`Server is up on http://localhost:${PORT}`);
 });
