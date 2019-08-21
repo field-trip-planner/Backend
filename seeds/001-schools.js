@@ -16,12 +16,12 @@ exports.seed = function(knex) {
         },
         {
           id: 2,
-          school_name: "",
-          address: "",
-          category: "",
-          city: "",
-          state: "",
-          zip_code: ""
+          school_name: "Monatiquot School Kindergarten Center",
+          address: "25 Brow Ave",
+          category: "Elementary",
+          city: "Braintree",
+          state: "MA",
+          zip_code: "02184"
         }
       ]);
     });

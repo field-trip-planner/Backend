@@ -1,4 +1,17 @@
 exports.up = async function(knex) {
+  await knex.schema.createTable("schools", tbl => {
+    tbl.increments("id");
+    tbl.string("school_name").notNullable();
+    tbl
+      .string("address")
+      .notNullable()
+      .unique();
+    tbl.string("category").notNullable();
+    tbl.string("city").notNullable();
+    tbl.string("state").notNullable();
+    tbl.string("zip_code").notNullable();
+  });
+
   await knex.schema.createTable("users", tbl => {
     tbl.increments("id");
     tbl.string("first_name").notNullable();
@@ -32,18 +45,6 @@ exports.up = async function(knex) {
       .references("id")
       .inTable("users");
   });
-  await knex.schema.createTable("schools", tbl => {
-    tbl.increments("id");
-    tbl.string("school_name").notNullable();
-    tbl
-      .string("address")
-      .notNullable()
-      .unique();
-    tbl.string("category").notNullable();
-    tbl.string("city").notNullable();
-    tbl.string("state").notNullable();
-    tbl.string("zip_code").notNullable();
-  });
 
   await knex.schema.createTable("field_trips", tbl => {
     tbl.increments("id");
@@ -72,6 +73,7 @@ exports.up = async function(knex) {
       .integer("field_trip_id")
       .references("id")
       .inTable("field_trips");
+    tbl.boolean("isChaperone").notNullable();
   });
   await knex.schema.createTable("students_field_trips", tbl => {
     tbl.increments("id");
