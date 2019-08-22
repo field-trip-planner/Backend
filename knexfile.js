@@ -8,6 +8,26 @@ module.exports = {
     }
   },
 
+  /* For your Local environment */
+
+  // staging: {
+  //   client: "postgresql",
+  //   connection: {
+  //     database: 'fieldtrip',
+  //     user: 'postgres',
+  //     password: ''
+  //   },
+  //   pool: {
+  //     min: 2,
+  //     max: 10
+  //   },
+  //   migrations: {
+  //     tableName: "knex_migrations"
+  //   }
+  // },
+
+/* Heroku Staging */
+
   staging: {
     client: "postgresql",
     connection: process.env.DATABASE_URL,

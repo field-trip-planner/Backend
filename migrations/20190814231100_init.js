@@ -104,11 +104,11 @@ exports.up = async function(knex) {
 };
 
 exports.down = async function(knex) {
-  await knex.schema.dropTableIfExists("schools");
-  await knex.schema.dropTableIfExists("users");
-  await knex.schema.dropTableIfExists("students");
-  await knex.schema.dropTableIfExists("field_trips");
-  await knex.schema.dropTableIfExists("users_field_trips");
-  await knex.schema.dropTableIfExists("students_field_trips");
   await knex.schema.dropTableIfExists("parents_students");
+  await knex.schema.dropTableIfExists("students_field_trips");
+  await knex.schema.dropTableIfExists("users_field_trips");
+  await knex.schema.dropTableIfExists("field_trips");
+  await knex.schema.dropTableIfExists("students");
+  await knex.schema.dropTableIfExists("users");
+  await knex.schema.dropTableIfExists("schools");
 };
