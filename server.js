@@ -4,6 +4,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const server = express();
+// const db = require("./models/schoolModel");
+const db = require("./models/field_tripModel");
 
 // Express Middleware
 server.use(cors());
