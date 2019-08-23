@@ -8,9 +8,8 @@ const server = express();
 // const db = require("./models/field_tripModel");
 
 // define router paths
-const FieldTripRouter = require('./routes/fieldtrip-router');
+const FieldTripRouter = require('./routes/fieldtrips');
 const SchoolsRouter = require('./routes/schools');
-
 
 
 // Express Middleware
@@ -18,7 +17,7 @@ server.use(cors());
 server.use(helmet());
 server.use(express.json());
 
-// router obj is isolated instCE
+// router obj is isolated instance
 server.use('/fieldtrips', FieldTripRouter);
 server.use('/schools', SchoolsRouter);
 
