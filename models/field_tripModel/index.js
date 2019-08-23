@@ -27,14 +27,14 @@ async function deleteFieldTrip(id) {
     .where({ id })
     .del();
 }
-// async function testDB() {
-//   try {
-//     const data = await getFieldTrips();
-//     console.log(data);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
+ async function testDB() {
+   try {
+     const data = await getFieldTrips();
+     console.log(data);
+   } catch (err) {
+     console.log(err);
+   }
+ }
 // testDB();
 
 module.exports = {
