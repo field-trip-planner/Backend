@@ -8,7 +8,7 @@ const server = express();
 // const db = require("./models/field_tripModel");
 
 // define router paths
-const FieldTripRouter = require('./routes/fieldtrip-router');
+const FieldTripRouter = require('./routes/fieldtrips');
 
 
 // Express Middleware
