@@ -10,7 +10,7 @@ const server = express();
 // define router paths
 const FieldTripRouter = require('./routes/fieldtrips');
 const SchoolsRouter = require('./routes/schools');
-
+const StudentsRouter = require('./routes/students');
 
 // Express Middleware
 server.use(cors());
@@ -20,7 +20,7 @@ server.use(express.json());
 // router obj is isolated instance
 server.use('/fieldtrips', FieldTripRouter);
 server.use('/schools', SchoolsRouter);
-
+server.use('/students', StudentsRouter);
 
 server.get("/", (req, res) => {
   res.status(200).json("Server is up");
