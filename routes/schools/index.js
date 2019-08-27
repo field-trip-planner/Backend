@@ -83,4 +83,50 @@ router.post('/', async (req, res) => {
   }
 })
 
+// UPDATE School
+router.put('/:id', async (req, res) =>{
+  const { id } = req.params;
+
+  const changes = req.body;
+
+  const { school_name } = changes;
+
+  if (!school_name) {
+    return res.status(400)
+      .json({
+        message: 'provide a school name'
+      });
+  }
+
+  try {
+    const school = await db.getSchoolById(id);
+
+    if (!school) {
+      return res.status(404)
+        .json({
+          message: 'school not found'
+        });
+
+    } else {
+
+      await db.updateSchool(id, changes);
+
+      const updatedSchool = await db.getSchoolById(id);
+
+      return res.status(200)
+        .json({
+          updatedSchool,
+          message: `${school.school_name} has been updated to ${updatedSchool.school_name}`
+        });
+    }
+  }
+  catch (err) {
+    res.status(500)
+      .json({
+        err,
+        message: 'Unable to process request'
+      })
+  }
+})
+
 module.exports = router;
