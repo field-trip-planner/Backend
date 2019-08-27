@@ -2,7 +2,11 @@ const express = require('express');
 const db = require('../../models/schoolModel/index');
 const router = express.Router();
 
-// GET Schools
+/*
+@GET: all schools
+@PARAMS: none
+@ROUTE: "/schools"
+*/
 router.get('/', async (req, res) => {
   try {
     const schools = await db.getSchools();
@@ -19,7 +23,11 @@ router.get('/', async (req, res) => {
   }
 })
 
-// GET School by Id
+/*
+@GET: schools
+@PARAMS: id[STRING]!
+@ROUTE: "/schools/:id"
+*/
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -41,7 +49,11 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// CREATE School
+/*
+@POST: create new school
+@PARAMS: name[STRING]!
+@ROUTE: "/schools"
+*/
 router.post('/', async (req, res) => {
   const newSchool = req.body;
 
@@ -83,7 +95,11 @@ router.post('/', async (req, res) => {
   }
 })
 
-// UPDATE School
+/*
+@PUT: update school
+@PARAMS: id[STRING]! name[STRING]!
+@ROUTE: "/schools/id"
+*/
 router.put('/:id', async (req, res) =>{
   const { id } = req.params;
 
@@ -118,6 +134,41 @@ router.put('/:id', async (req, res) =>{
           updatedSchool,
           message: `${school.school_name} has been updated to ${updatedSchool.school_name}`
         });
+    }
+  }
+  catch (err) {
+    res.status(500)
+      .json({
+        err,
+        message: 'Unable to process request'
+      })
+  }
+})
+
+/*
+@DELETE: school
+@PARAMS: id[STRING]!
+@ROUTE: "/schools/:id"
+*/
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const school = await db.getSchoolById(id);
+
+    if (!school) {
+      return res.status(404)
+        .json({
+          message: 'school not found'
+        });
+
+    } else {
+
+      await db.deleteSchool(id);
+
+      return res.status(200).json({
+        message: `${school.school_name} has been deleted`
+      });
     }
   }
   catch (err) {
