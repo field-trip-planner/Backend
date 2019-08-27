@@ -35,16 +35,40 @@ router.get('/:id', async (req, res) => {
 
 })
 
+router.delete('/:id', async(req, res) => {
+    const {id} = req.params;
+
+    try {
+        const allFieldTrips = await db.deleteFieldTrip(id);
+        console.log('>>>>>>>>', allFieldTrips);
+
+        if(allFieldTrips) {
+            res.status(200).json({ 
+                message: `Field Trip with id ${id} has been deleted`
+            })
+        } else {
+            res.status(404).json({message: `the fieldtrip with id ${id} does not exist`})
+        }
+    
+    } catch(error){
+        res.status(500).json({
+            message: `fieldtrips Server Error `,
+            error: error 
+         })
+     }
+})
+
+
 router.post('/', async(req, res) => {
     const {name} = req.body;
     
     try{
-        if(name === '') {
-            res.status(400).json({message: `Please provide name`});
-        } else {
+     if(req.body.name === '') {
+           res.status(400).json({message: `Please provide name`});
+       } else {
             const fieldTrip = await db.addFieldTrip(req.body);
             res.status(201).json(fieldTrip);
-        }
+      }
     }
     catch(error){
         res.status(500).json({
@@ -52,8 +76,6 @@ router.post('/', async(req, res) => {
             error: error 
          })
      }
-
-
 })
 
 

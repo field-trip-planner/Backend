@@ -11,7 +11,7 @@ async function getFieldTripById(id) {
 }
 
 async function addFieldTrip(newTrip) {
-  const [id] = await db("field_trips").insert(newTrip);
+  const [id] = await db("field_trips").insert(newTrip, 'id');
   return getFieldTripById(id);
   //return db('field_trips').where({ id }).first()
 }
