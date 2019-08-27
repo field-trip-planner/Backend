@@ -41,4 +41,46 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// CREATE School
+router.post('/', async (req, res) => {
+  const newSchool = req.body;
+
+  try {
+    const { school_name } = newSchool;
+
+    const schools = await db.getSchools();
+
+    const result = schools.filter((school) => {
+      return school_name === school.school_name;
+    });
+
+    if (!school_name) {
+      return res.status(400)
+        .json({
+          error: 'name missing'
+        });
+
+    } else if (result.length) {
+
+      return res.status(400)
+        .json({
+          message: `${school_name} already exist`
+        });
+
+    } else {
+
+      const schoolAdded = await db.addSchool(newSchool);
+
+      res.status(201).json(schoolAdded);
+    }
+  }
+  catch (err) {
+    return res.status(500)
+      .json({
+        err,
+        message: 'Unable to process request'
+      })
+  }
+})
+
 module.exports = router;
