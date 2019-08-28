@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
   const newSchool = req.body;
 
   try {
-    const { school_name } = newSchool;
+    const { school_name, address, category, city, state, zip_code } = newSchool;
 
     const schools = await db.getSchools();
 
@@ -66,10 +66,10 @@ router.post('/', async (req, res) => {
       return school_name === school.school_name;
     });
 
-    if (!school_name) {
+    if (!school_name || !address || !category || !city || !state || !zip_code) {
       return res.status(400)
         .json({
-          error: 'name missing'
+          error: ' all fields are required'
         });
 
     } else if (result.length) {
