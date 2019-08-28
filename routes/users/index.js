@@ -52,8 +52,8 @@ router.put('/:id', async(req, res) => {
   const userInfo = req.body;
   const {id} = req.params;
   try {
-      const userUpdated = await db.updateUser(id, userInfo);
-      if(userUpdated) {
+      const updatedInfo = await db.updateUser(id, userInfo);
+      if(updatedInfo) {
           res.status(200).json(userInfo);
       } else {
           res.status(404).json({
