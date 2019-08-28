@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async(req, res) => {
   const {user} = req.body;
   try{
-  if(req.body.first_name === '' & req.body.last_name == '') {
+  if(req.body.first_name === '' && req.body.last_name == '') {
         res.status(400).json({message: `Please Provide a first name and a last name`});
     } else {
           const User = await db.addUser(req.body);
