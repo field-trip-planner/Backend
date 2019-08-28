@@ -24,7 +24,7 @@ const deleteSchool = id => {
 
 const addSchool = school => {
   return db("schools")
-    .insert(school)
+    .insert(school, 'id')
     .returning("*");
 };
 
