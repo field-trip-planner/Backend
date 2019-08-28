@@ -58,11 +58,12 @@ router.delete('/:id', async(req, res) => {
 
 
 router.post('/', async(req, res) => {
-    const {name} = req.body;
+    const {name, date, address, supplies, cost, field_trip_details} = req.body;
     
+
     try{
-     if(req.body.name === '') {
-           res.status(400).json({message: `Please provide name`});
+     if(name === '' || date === '' || address === '' || supplies === '' || cost === '' || field_trip_details === '') {
+           res.status(400).json({message: `Please provide all required input fields`});
        } else {
             const fieldTrip = await db.addFieldTrip(req.body);
             res.status(201).json(fieldTrip);
