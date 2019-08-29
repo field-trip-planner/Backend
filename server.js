@@ -4,14 +4,17 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const server = express();
-// const db = require("./models/schoolModel");
-// const db = require("./models/field_tripModel");
+//Imports passport configuration
+const passportSetup = require('./authenticationConfig/passport-setup');
+server.use(passport.initialize());
+server.use(passport.session());
 
 // define router paths
 const FieldTripRouter = require('./routes/fieldtrips');
 const SchoolsRouter = require('./routes/schools');
 const StudentsRouter = require('./routes/students');
 const UsersRouter = require('./routes/users');
+const LoginRouter = require('./routes/login');
 
 // Express Middleware
 server.use(cors());
@@ -23,9 +26,11 @@ server.use('/fieldtrips', FieldTripRouter);
 server.use('/schools', SchoolsRouter);
 server.use('/students', StudentsRouter);
 server.use('/users',UsersRouter);
+server.use('/auth', LoginRouter)
 
 server.get("/", (req, res) => {
-  res.status(200).json("Server is up");
+  // res.status(200).json("Server is up");
+  res.render('home');
 });
 
 module.exports = server;
