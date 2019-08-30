@@ -4,10 +4,9 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const server = express();
+
 //Imports passport configuration
 const passportSetup = require('./authenticationConfig/passport-setup');
-server.use(passport.initialize());
-server.use(passport.session());
 
 // define router paths
 const FieldTripRouter = require('./routes/fieldtrips');
@@ -27,6 +26,9 @@ server.use('/schools', SchoolsRouter);
 server.use('/students', StudentsRouter);
 server.use('/users',UsersRouter);
 server.use('/auth', LoginRouter)
+
+server.set('view engine', 'ejs');
+
 
 server.get("/", (req, res) => {
   // res.status(200).json("Server is up");

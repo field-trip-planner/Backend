@@ -1,4 +1,4 @@
-exports.up = async function(knex) {
+exports.up = async function (knex) {
   await knex.schema.createTable("schools", tbl => {
     tbl.increments("id");
     tbl.string("school_name").notNullable();
@@ -14,6 +14,7 @@ exports.up = async function(knex) {
 
   await knex.schema.createTable("users", tbl => {
     tbl.increments("id");
+    tbl.string("googleId");
     tbl.string("first_name").notNullable();
     tbl.string("last_name").notNullable();
     tbl
@@ -103,7 +104,7 @@ exports.up = async function(knex) {
   });
 };
 
-exports.down = async function(knex) {
+exports.down = async function (knex) {
   await knex.schema.dropTableIfExists("parents_students");
   await knex.schema.dropTableIfExists("students_field_trips");
   await knex.schema.dropTableIfExists("users_field_trips");

@@ -10,6 +10,12 @@ const getUserById = id => {
     .first();
 };
 
+const getUserByGoogleId = googleId => {
+  return db("users")
+    .where({ googleId })
+    .first();
+};
+
 const addUser = user => {
   return db("users")
     .insert(user)
@@ -42,6 +48,7 @@ testDB();
 module.exports = {
   getUsers,
   getUserById,
+  getUserByGoogleId,
   addUser,
   updateUser,
   deleteUser
