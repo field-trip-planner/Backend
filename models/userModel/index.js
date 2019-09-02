@@ -9,9 +9,9 @@ const getUserById = id => {
     .where({ id })
     .first();
 };
-const getUserByUsername = name => {
+const getUserByEmail = email => {
   return db("users")
-    .where({ username: name })
+    .where({ email: email })
     .first();
 };
 
@@ -39,5 +39,5 @@ module.exports = {
   addUser,
   updateUser,
   deleteUser,
-  getUserByUsername
+  getUserByEmail
 };

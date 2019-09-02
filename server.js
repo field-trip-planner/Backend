@@ -13,12 +13,15 @@ const server = express();
 server.use(cors());
 server.use(helmet());
 server.use(express.json());
-server.use(session({ secret: "cats", resave: true, saveUninitialized: true }));
+server.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+  })
+);
 server.use(passport.initialize());
 server.use(passport.session());
-
-// const initializePassport = require("./config");
-// initializePassport(passport);
 
 // define router paths
 const FieldTripRouter = require("./routes/fieldtrips");
@@ -28,9 +31,9 @@ const UsersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
 
 // router obj is isolated instance
-server.use("/fieldtrips", FieldTripRouter);
-server.use("/schools", SchoolsRouter);
-server.use("/students", StudentsRouter);
+server.use("/fieldtrips", mw.checkAuth, FieldTripRouter);
+server.use("/schools", mw.checkAuth, SchoolsRouter);
+server.use("/students", mw.checkAuth, StudentsRouter);
 server.use("/users", mw.checkAuth, UsersRouter);
 server.use("/login", loginRouter);
 
