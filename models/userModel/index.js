@@ -33,17 +33,6 @@ const deleteUser = id => {
     .del();
 };
 
-async function testDB() {
-  try {
-    const data = await getUsers();
-    console.log(data);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-testDB();
-
 module.exports = {
   getUsers,
   getUserById,
