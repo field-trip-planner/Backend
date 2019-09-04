@@ -5,6 +5,7 @@ const passport = require("passport");
 const cors = require("cors");
 const helmet = require("helmet");
 const mw = require("./middleware");
+const methodOverride = require("method-override");
 require("./config")(passport);
 
 const server = express();
@@ -13,6 +14,7 @@ const server = express();
 server.use(cors());
 server.use(helmet());
 server.use(express.json());
+// server.use(methodOverride("_method"));
 server.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -28,7 +30,8 @@ const FieldTripRouter = require("./routes/fieldtrips");
 const SchoolsRouter = require("./routes/schools");
 const StudentsRouter = require("./routes/students");
 const UsersRouter = require("./routes/users");
-const loginRouter = require("./routes/login");
+const loginRouter = require("./routes/auth/login");
+const logoutRouter = require("./routes/auth/logout");
 
 // router obj is isolated instance
 server.use("/fieldtrips", mw.checkAuth, FieldTripRouter);
@@ -36,6 +39,7 @@ server.use("/schools", mw.checkAuth, SchoolsRouter);
 server.use("/students", mw.checkAuth, StudentsRouter);
 server.use("/users", mw.checkAuth, UsersRouter);
 server.use("/login", loginRouter);
+server.use("/logout", logoutRouter);
 
 server.get("/", (req, res) => {
   res.status(200).json("Server is up");

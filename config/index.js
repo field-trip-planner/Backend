@@ -6,13 +6,13 @@ const passportInit = passport => {
   const authenticateUser = async (email, password, done) => {
     const user = await db.getUserByEmail(email);
     if (!user) {
-      return done(null, false, { message: "Email not found." });
+      return done(null, false, { message: "Login Failed." });
     }
     try {
       if (await bcrypt.compareSync(password, user.password)) {
         return done(null, user);
       } else {
-        return done(null, false, { message: "Password incorrect" });
+        return done(null, false, { message: "Login Failed" });
       }
     } catch (err) {
       return done(err);
