@@ -2,12 +2,15 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const passport = require('passport');
+const keys = require('./authenticationConfig/keys');
 
 const server = express();
 
 //Imports passport configuration
 const passportSetup = require('./authenticationConfig/passport-setup');
-
+//Cookie Session setup
+const cookieSession = require('cookie-session');
 // define router paths
 const FieldTripRouter = require('./routes/fieldtrips');
 const SchoolsRouter = require('./routes/schools');
@@ -19,6 +22,19 @@ const LoginRouter = require('./routes/login');
 server.use(cors());
 server.use(helmet());
 server.use(express.json());
+
+//Cookie Session
+server.use(cookieSession({
+  maxAge: 24 * 60 * 60 * 1000,
+  //1 day for expiration period
+  keys: [keys.session.cookieKey]
+  //keys are the strings used to encrypt the user sensitive data in
+  //a cookie
+}));
+
+//initialize passport
+server.use(passport.initialize());
+server.use(passport.session());
 
 // router obj is isolated instance
 server.use('/fieldtrips', FieldTripRouter);
