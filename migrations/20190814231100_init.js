@@ -1,6 +1,6 @@
 exports.up = async function(knex) {
   await knex.schema.createTable("schools", tbl => {
-    tbl.increments("id");
+    tbl.increments("id").primary(); // adding primary() ensures id increments for Postgres
     tbl.string("school_name").notNullable();
     tbl
       .string("address")
@@ -13,7 +13,7 @@ exports.up = async function(knex) {
   });
 
   await knex.schema.createTable("users", tbl => {
-    tbl.increments("id");
+    tbl.increments("id").primary();
     tbl.string("first_name").notNullable();
     tbl.string("last_name").notNullable();
     tbl
@@ -33,7 +33,7 @@ exports.up = async function(knex) {
     tbl.string("phone_number").unique();
   });
   await knex.schema.createTable("students", tbl => {
-    tbl.increments("id");
+    tbl.increments("id").primary();
     tbl.string("first_name").notNullable();
     tbl.string("last_name").notNullable();
     tbl
@@ -47,7 +47,7 @@ exports.up = async function(knex) {
   });
 
   await knex.schema.createTable("field_trips", tbl => {
-    tbl.increments("id");
+    tbl.increments("id").primary();
     tbl.string("name").notNullable();
     tbl.date("date").notNullable();
     tbl.string("address").notNullable();
@@ -64,7 +64,7 @@ exports.up = async function(knex) {
     tbl.string("field_trip_details");
   });
   await knex.schema.createTable("users_field_trips", tbl => {
-    tbl.increments("id");
+    tbl.increments("id").primary();
     tbl
       .integer("user_id")
       .references("id")
@@ -76,7 +76,7 @@ exports.up = async function(knex) {
     tbl.boolean("isChaperone").notNullable();
   });
   await knex.schema.createTable("students_field_trips", tbl => {
-    tbl.increments("id");
+    tbl.increments("id").primary();
     tbl
       .integer("student_id")
       .references("id")
@@ -91,7 +91,7 @@ exports.up = async function(knex) {
     tbl.boolean("permission_status").notNullable();
   });
   await knex.schema.createTable("parents_students", tbl => {
-    tbl.increments("id");
+    tbl.increments("id").primary();
     tbl
       .integer("parent_id")
       .references("id")
