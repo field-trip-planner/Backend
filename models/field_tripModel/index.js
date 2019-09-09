@@ -11,9 +11,9 @@ async function getFieldTripById(id) {
 }
 
 async function addFieldTrip(newTrip) {
-  const [id] = await db("field_trips").insert(newTrip, 'id');
-  return getFieldTripById(id);
-  //return db('field_trips').where({ id }).first()
+  return db("field_trips")
+    .insert(newTrip)
+    .returning(["id", "name"]);
 }
 
 async function updateFieldTrip(id, updates) {
@@ -27,15 +27,6 @@ async function deleteFieldTrip(id) {
     .where({ id })
     .del();
 }
- async function testDB() {
-   try {
-     const data = await getFieldTrips();
-     console.log(data);
-   } catch (err) {
-     console.log(err);
-   }
- }
-// testDB();
 
 module.exports = {
   getFieldTrips,

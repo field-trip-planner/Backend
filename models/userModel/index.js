@@ -9,6 +9,11 @@ const getUserById = id => {
     .where({ id })
     .first();
 };
+const getUserByEmail = email => {
+  return db("users")
+    .where({ email: email })
+    .first();
+};
 
 const addUser = user => {
   return db("users")
@@ -28,21 +33,11 @@ const deleteUser = id => {
     .del();
 };
 
-async function testDB() {
-  try {
-    const data = await getUsers();
-    console.log(data);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-testDB();
-
 module.exports = {
   getUsers,
   getUserById,
   addUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserByEmail
 };

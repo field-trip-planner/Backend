@@ -28,17 +28,6 @@ const deleteStudent = id => {
     .del();
 };
 
-async function testDB() {
-  try {
-    const data = await getStudents();
-    console.log(data);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-testDB();
-
 module.exports = {
   getStudents,
   getStudentById,
