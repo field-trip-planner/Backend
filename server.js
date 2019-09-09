@@ -5,19 +5,28 @@ const passport = require("passport");
 const cors = require("cors");
 const helmet = require("helmet");
 const mw = require("./middleware");
+const uuid = require("uuid/v4");
 const methodOverride = require("method-override");
 require("./config")(passport);
 
 const server = express();
 
 // Express Middleware
-server.use(cors());
+server.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000"
+  })
+);
 server.use(helmet());
 server.use(express.json());
-// server.use(methodOverride("_method"));
+server.use(methodOverride("_method"));
 server.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    genid: () => {
+      return uuid();
+    },
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
   })

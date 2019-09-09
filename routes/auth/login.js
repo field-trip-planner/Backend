@@ -4,18 +4,20 @@ const router = express.Router();
 
 router.post(
   "/",
-  passport.authenticate("local", { failureRedirect: "/login/failed" }),
+  passport.authenticate("local", {
+    failureRedirect: "/login/failed"
+  }),
   function(req, res) {
-    res.status(200).json({ message: "Logged in" });
+    const user = {
+      ...req.user,
+      password: ""
+    };
+    res.status(200).json({ message: "Logged in", user: user });
   }
 );
 
 router.get("/failed", (req, res) => {
   res.status(401).json("Login Failed");
-});
-
-router.get("/test", (req, res) => {
-  res.status(401).json("Not Logged In");
 });
 
 module.exports = router;

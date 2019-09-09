@@ -3,6 +3,6 @@ const router = express.Router();
 
 router.delete("/", (req, res) => {
   req.logOut();
-  res.redirect("/");
+  res.redirect("");
 });
 module.exports = router;

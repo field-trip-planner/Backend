@@ -13,9 +13,9 @@ module.exports = {
   staging: {
     client: "postgresql",
     connection: {
-      database: 'fieldtrip',
-      user: 'postgres',
-      password: 'labsweek'
+      database: "fieldtrip",
+      user: "postgres",
+      password: "pgadmin"
     },
     pool: {
       min: 2,
@@ -26,8 +26,8 @@ module.exports = {
     }
   },
 
-/* Heroku Staging */
-/*
+  /* Heroku Staging */
+  /*
   staging: {
     client: "postgresql",
     connection: process.env.DATABASE_URL,

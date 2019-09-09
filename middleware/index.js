@@ -17,9 +17,8 @@ const hash = (req, res, next) => {
 function checkAuth(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
-  }
-  if (!req.isAuthenticated()) {
-    res.redirect("/login/test");
+  } else {
+    res.status(401).json({ message: "Not Authorized" });
   }
 }
 
