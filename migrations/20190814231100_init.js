@@ -1,6 +1,6 @@
 exports.up = async function(knex) {
   await knex.schema.createTable("schools", tbl => {
-    tbl.increments("id").primary(); // adding primary() ensures id increments for Postgres
+    tbl.uuid("id").primary(); // adding primary() ensures id increments for Postgres
     tbl.string("school_name").notNullable();
     tbl
       .string("address")
@@ -13,7 +13,7 @@ exports.up = async function(knex) {
   });
 
   await knex.schema.createTable("users", tbl => {
-    tbl.increments("id").primary();
+    tbl.uuid("id").primary();
     tbl.string("first_name").notNullable();
     tbl.string("last_name").notNullable();
     tbl
@@ -21,68 +21,64 @@ exports.up = async function(knex) {
       .notNullable()
       .unique();
     tbl.string("password").notNullable();
-    tbl
-      .string("username")
-      .notNullable()
-      .unique();
     tbl.boolean("isTeacher");
     tbl
-      .integer("school_id")
+      .uuid("school_id")
       .references("id")
       .inTable("schools");
     tbl.string("phone_number").unique();
   });
   await knex.schema.createTable("students", tbl => {
-    tbl.increments("id").primary();
+    tbl.uuid("id").primary();
     tbl.string("first_name").notNullable();
     tbl.string("last_name").notNullable();
     tbl
-      .integer("school_id")
+      .uuid("school_id")
       .references("id")
       .inTable("schools");
     tbl
-      .integer("teacher_id")
+      .uuid("teacher_id")
       .references("id")
       .inTable("users");
   });
 
   await knex.schema.createTable("field_trips", tbl => {
-    tbl.increments("id").primary();
+    tbl.uuid("id").primary();
     tbl.string("name").notNullable();
     tbl.date("date").notNullable();
     tbl.string("address").notNullable();
     tbl.string("supplies");
     tbl
-      .integer("school_id")
+      .uuid("school_id")
       .references("id")
       .inTable("schools");
     tbl
-      .integer("creator_id")
+      .uuid("creator_id")
       .references("id")
       .inTable("users");
     tbl.string("cost");
     tbl.string("field_trip_details");
   });
   await knex.schema.createTable("users_field_trips", tbl => {
-    tbl.increments("id").primary();
+    tbl.uuid("id").primary();
     tbl
-      .integer("user_id")
+      .uuid("user_id")
       .references("id")
       .inTable("users");
     tbl
-      .integer("field_trip_id")
+      .uuid("field_trip_id")
       .references("id")
       .inTable("field_trips");
     tbl.boolean("isChaperone").notNullable();
   });
   await knex.schema.createTable("students_field_trips", tbl => {
-    tbl.increments("id").primary();
+    tbl.uuid("id").primary();
     tbl
-      .integer("student_id")
+      .uuid("student_id")
       .references("id")
       .inTable("students");
     tbl
-      .integer("field_trip_id")
+      .uuid("field_trip_id")
       .references("id")
       .inTable("field_trips");
     tbl.boolean("going_status").notNullable();
@@ -91,13 +87,12 @@ exports.up = async function(knex) {
     tbl.boolean("permission_status").notNullable();
   });
   await knex.schema.createTable("parents_students", tbl => {
-    tbl.increments("id").primary();
     tbl
-      .integer("parent_id")
+      .uuid("parent_id")
       .references("id")
       .inTable("users");
     tbl
-      .integer("student_id")
+      .uuid("student_id")
       .references("id")
       .inTable("students");
   });

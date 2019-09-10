@@ -1,5 +1,4 @@
 const express = require("express");
-const mw = require("../../middleware");
 const db = require("../../models/userModel/index");
 const router = express.Router();
 
@@ -26,23 +25,6 @@ router.get("/:id", async (req, res) => {
         .status(404)
         .json({ message: `the user with id ${id} does not exist` });
     }
-  } catch (error) {
-    res.status(500).json({
-      message: `User Server Error `,
-      error: error
-    });
-  }
-});
-
-router.post("/", mw.hash, async (req, res) => {
-  try {
-    if (!req.body) {
-      res
-        .status(400)
-        .json({ message: `Please Provide a first name and a last name` });
-    }
-    const User = await db.addUser(req.body);
-    res.status(201).json(User);
   } catch (error) {
     res.status(500).json({
       message: `User Server Error `,
