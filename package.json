@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watch --verbose --runInBand",
     "server": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "seed": "knex migrate:rollback --env staging && knex migrate:latest --env staging && knex seed:run --env staging"
   },
   "keywords": [],
   "author": "",
