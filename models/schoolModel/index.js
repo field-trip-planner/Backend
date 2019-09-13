@@ -22,10 +22,18 @@ const deleteSchool = id => {
     .del();
 };
 
-const addSchool = school => {
-  return db("schools")
+// const addSchool = school => {
+//   return db("schools")
+//     .insert(school)
+//     .returning("*");
+// };
+
+const addSchool = async school => {
+  const schoolObject = await db("schools")
     .insert(school)
     .returning("*");
+  const [newSchool] = schoolObject;
+  return newSchool;
 };
 
 module.exports = {

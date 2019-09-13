@@ -45,7 +45,7 @@ const registerRouter = require("./routes/auth/register");
 
 // router obj is isolated instance
 server.use("/fieldtrips", mw.checkAuth, FieldTripRouter);
-server.use("/schools", mw.checkAuth, SchoolsRouter);
+server.use("/schools", SchoolsRouter);
 server.use("/students", mw.checkAuth, StudentsRouter);
 server.use("/users", mw.checkAuth, UsersRouter);
 server.use("/login", loginRouter);
