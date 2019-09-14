@@ -9,9 +9,14 @@ const server = express();
 
 //Imports passport configuration
 const passportSetup = require('./authenticationConfig/passport-setup');
+passportSetup(passport);
+//new code
+
 //Cookie Session setup
-// const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 //old code
+
 // define router paths
 const FieldTripRouter = require('./routes/fieldtrips');
 const SchoolsRouter = require('./routes/schools');
@@ -21,19 +26,22 @@ const AuthRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 
 // Express Middleware
-server.use(cors());
+server.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 server.use(helmet());
 server.use(express.json());
 
 //Cookie Session
-// server.use(cookieSession({
-//   maxAge: 24 * 60 * 60 * 1000,
-//   //1 day for expiration period
-//   keys: [keys.session.cookieKey],
-//   httpOnly: false
-//   //keys are the strings used to encrypt the user sensitive data in
-//   //a cookie
-// }));
+server.use(cookieSession({
+  maxAge: 24 * 60 * 60 * 1000,
+  //1 day for expiration period
+  keys: [keys.session.cookieKey],
+  httpOnly: false
+  //keys are the strings used to encrypt the user sensitive data in
+  //a cookie
+}));
+
+server.use(cookieParser());
+
 //old code
 
 //initialize passport
