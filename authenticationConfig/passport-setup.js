@@ -1,5 +1,4 @@
-// const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20');
+
 
 // const User = require('../models/userModel');
 
@@ -46,7 +45,7 @@
 //       console.log('new user created', newUser);
 //       done(null, newUser);
     
-//   }
+//  
 // }));
 //old code
 

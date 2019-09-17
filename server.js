@@ -15,7 +15,6 @@ passportSetup(passport);
 //Cookie Session setup
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
-//old code
 
 // define router paths
 const FieldTripRouter = require('./routes/fieldtrips');
@@ -23,7 +22,6 @@ const SchoolsRouter = require('./routes/schools');
 const StudentsRouter = require('./routes/students');
 const UsersRouter = require('./routes/users');
 const AuthRouter = require('./routes/auth');
-const profileRouter = require('./routes/profile');
 
 // Express Middleware
 server.use(cors({credentials: true, origin: 'http://localhost:3000'}));
@@ -42,8 +40,6 @@ server.use(cookieSession({
 
 server.use(cookieParser());
 
-//old code
-
 //initialize passport
 server.use(passport.initialize());
 server.use(passport.session());
@@ -54,15 +50,10 @@ server.use('/schools', SchoolsRouter);
 server.use('/students', StudentsRouter);
 server.use('/users',UsersRouter);
 server.use('/auth', AuthRouter)
-server.use('/profile', profileRouter )
-
-
-server.set('view engine', 'ejs');
 
 
 server.get("/", (req, res) => {
-  // res.status(200).json("Server is up");
-  res.render('home');
+  res.status(200).json("Server is up");
 });
 
 module.exports = server;
