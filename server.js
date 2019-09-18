@@ -15,7 +15,8 @@ const server = express();
 server.use(
   cors({
     credentials: true,
-    origin: "https://fieldtripplanner-dd4dc.web.app"
+    origin: "http://localhost:3000",
+    // origin: "https://fieldtripplanner-dd4dc.web.app"
   })
 );
 server.use(helmet());
