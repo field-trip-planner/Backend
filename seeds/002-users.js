@@ -12,7 +12,7 @@ exports.seed = function(knex) {
           email: "mw@ya.com",
           password:
             "$2a$10$2tnac9eDzYWlUPE8Gs7QeuFRskglSfGJ/xAeApqS.M19NAEnyhHwa",
-          isTeacher: true,
+          role: 'teacher',
           school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
           phone_number: "666-898-1345"
         },
@@ -23,7 +23,7 @@ exports.seed = function(knex) {
           email: "ls@ya.com",
           password:
             "$2a$10$XqFsTM/LnALccOqBNPBwuuKlaNEDZPiOcqhIyCw3A/F3R1ut1DEHm",
-          isTeacher: false,
+          role: 'parent',
           school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
           phone_number: "786-898-1005"
         },
@@ -34,7 +34,7 @@ exports.seed = function(knex) {
           email: "jc@ya.com",
           password:
             "$2a$10$yQC0JsO5I6OGi7xhHcSkEOyGIalG9k95X3ebFcXoxZq0pVqUowmeG",
-          isTeacher: true,
+          role: 'chaperone',
           school_id: "9a3e0d6f-1e1a-4894-ae96-5a1b512483ec",
           phone_number: "789-456-1589"
         }

@@ -14,7 +14,8 @@ exports.seed = function(knex) {
           school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
           creator_id: "59495f61-f31c-444d-a284-b2233e5aa914",
           cost: "$1,000,000",
-          field_trip_details: "HI"
+          field_trip_details: "HI",
+          chaperoneTasks: "1. Provide Water, 2. Collect the tickets, 3. Profit"
         },
         {
           id: "e50771b5-ec74-440f-addc-ea6c0beb0f77",
@@ -25,7 +26,8 @@ exports.seed = function(knex) {
           school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
           creator_id: "59495f61-f31c-444d-a284-b2233e5aa914",
           cost: "$10",
-          field_trip_details: "Magic"
+          field_trip_details: "Magic",
+          chaperoneTasks: "1. Steal the kids' lunch, 2. Kick the kid, 3. Kick them while they're down"
         },
         {
           id: "3e299fd8-0edd-42a4-999c-cbf57380b06b",
@@ -34,9 +36,10 @@ exports.seed = function(knex) {
           address: "East 64th Street, New York, NY 10021",
           supplies: "notebook, pencil, hat",
           school_id: "9a3e0d6f-1e1a-4894-ae96-5a1b512483ec",
-          creator_id: "456a1336-1ebc-47ab-abb0-4dec6c597442",
+          creator_id: "59495f61-f31c-444d-a284-b2233e5aa914",
           cost: "$1000",
-          field_trip_details: "Hey I'm walking here!"
+          field_trip_details: "Hey I'm walking here!",
+          chaperoneTasks: "1. Get the lighsaber, 2. Look for the force, 3. Profit"
         }
       ]);
     });
