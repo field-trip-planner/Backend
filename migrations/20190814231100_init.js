@@ -21,12 +21,13 @@ exports.up = async function(knex) {
       .notNullable()
       .unique();
     tbl.string("password").notNullable();
-    tbl.boolean("isTeacher");
+    tbl.string("role");
     tbl
       .uuid("school_id")
       .references("id")
       .inTable("schools");
     tbl.string("phone_number").unique();
+    tbl.integer("googleId");
   });
   await knex.schema.createTable("students", tbl => {
     tbl.uuid("id").primary();
@@ -37,7 +38,7 @@ exports.up = async function(knex) {
       .references("id")
       .inTable("schools");
     tbl
-      .uuid("teacher_id")
+      .uuid("parent_id")
       .references("id")
       .inTable("users");
   });
@@ -58,8 +59,9 @@ exports.up = async function(knex) {
       .inTable("users");
     tbl.string("cost");
     tbl.string("field_trip_details");
+    tbl.string("chaperoneTasks");
   });
-  await knex.schema.createTable("users_field_trips", tbl => {
+  await knex.schema.createTable("chaperones_field_trips", tbl => {
     tbl.uuid("id").primary();
     tbl
       .uuid("user_id")
@@ -69,7 +71,6 @@ exports.up = async function(knex) {
       .uuid("field_trip_id")
       .references("id")
       .inTable("field_trips");
-    tbl.boolean("isChaperone").notNullable();
   });
   await knex.schema.createTable("students_field_trips", tbl => {
     tbl.uuid("id").primary();
@@ -86,22 +87,11 @@ exports.up = async function(knex) {
     tbl.boolean("supplies_status").notNullable();
     tbl.boolean("permission_status").notNullable();
   });
-  await knex.schema.createTable("parents_students", tbl => {
-    tbl
-      .uuid("parent_id")
-      .references("id")
-      .inTable("users");
-    tbl
-      .uuid("student_id")
-      .references("id")
-      .inTable("students");
-  });
 };
 
 exports.down = async function(knex) {
-  await knex.schema.dropTableIfExists("parents_students");
   await knex.schema.dropTableIfExists("students_field_trips");
-  await knex.schema.dropTableIfExists("users_field_trips");
+  await knex.schema.dropTableIfExists("chaperones_field_trips");
   await knex.schema.dropTableIfExists("field_trips");
   await knex.schema.dropTableIfExists("students");
   await knex.schema.dropTableIfExists("users");
