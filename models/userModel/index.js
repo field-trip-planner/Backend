@@ -10,9 +10,10 @@ const getUserById = id => {
     .first();
 };
 
-const getUserBySchoolId = schoolId => {
+//
+const getUserBySchoolId = (schoolId) => {
   return db("users")
-  .where({school_id: schoolId, isTeacher: false})
+  .where({school_id: schoolId, role: 'parent'})
   .orderBy("last_name");
 };
 
