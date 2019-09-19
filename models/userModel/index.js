@@ -9,6 +9,13 @@ const getUserById = id => {
     .where({ id })
     .first();
 };
+
+const getUserBySchoolId = schoolId => {
+  return db("users")
+  .where({school_id: schoolId, isTeacher: false})
+  .orderBy("last_name");
+};
+
 const getUserByEmail = email => {
   return db("users")
     .where({ email: email })
@@ -36,6 +43,7 @@ const deleteUser = id => {
 module.exports = {
   getUsers,
   getUserById,
+  getUserBySchoolId,
   addUser,
   updateUser,
   deleteUser,
