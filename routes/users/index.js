@@ -33,8 +33,9 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/school/:id", async (req, res) => {
-  const { school_id, role } = req.params;
+router.get("/school", async (req, res) => {
+  // console.log(req.params)
+  const { school_id} = req.params;
 
   try {
 
