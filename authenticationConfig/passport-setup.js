@@ -67,6 +67,7 @@ module.exports = passport => {
     callbackURL: '/auth/google/redirect'
   },
   (token, refreshToken, profile, done) => {
+    console.log('hello here', profile)
     return done(null, {
       profile: profile,
       token: token
