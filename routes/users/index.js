@@ -33,13 +33,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/school", async (req, res) => {
-  // console.log(req.params)
-  const { school_id} = req.params;
+router.get("/school/:id", async (req, res) => {
+  //id is the school id
+  const { id } = req.params;
 
   try {
 
-    const users = await db.getUserBySchoolId(school_id)
+    const users = await db.getUserBySchoolId(id)
     res.status(200).json({ users: users });
     
   } catch (error) {
@@ -49,8 +49,7 @@ router.get("/school", async (req, res) => {
       error: error
     });
   }
-
-})
+});
 
 router.put("/:id", async (req, res) => {
   const userInfo = req.body;

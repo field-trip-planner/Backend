@@ -14,6 +14,7 @@ const getUserById = id => {
 const getUserBySchoolId = (schoolId) => {
   return db("users")
   .where({school_id: schoolId, role: 'parent'})
+  // .where({school_id: schoolId, role: 'parent'})
   .orderBy("last_name");
 };
 
