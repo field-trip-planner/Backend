@@ -10,6 +10,12 @@ const getStudentById = id => {
     .first();
 };
 
+const getStudentByParentId = id => {
+  return db('students')
+    .where({parent_id: id})
+    .returning('*');
+}
+
 const addStudent = student => {
   return db("students")
     .insert(student)
@@ -31,6 +37,7 @@ const deleteStudent = id => {
 module.exports = {
   getStudents,
   getStudentById,
+  getStudentByParentId,
   addStudent,
   updateStudent,
   deleteStudent
