@@ -49,7 +49,7 @@ const registerRouter = require("./routes/auth/register");
 server.use("/fieldtrips", mw.checkAuth, FieldTripRouter);
 server.use("/schools", SchoolsRouter);
 server.use("/students", mw.checkAuth, StudentsRouter);
-server.use("/students_fieldtrips", StudentsFieldTripsRouter);
+server.use("/students_fieldtrips", mw.checkAuth, StudentsFieldTripsRouter);
 server.use("/users", mw.checkAuth, UsersRouter);
 server.use("/login", loginRouter);
 server.use("/logout", logoutRouter);
