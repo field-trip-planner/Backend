@@ -14,9 +14,15 @@ const getUserById = id => {
 const getUserBySchoolId = (schoolId) => {
   return db("users")
   .where({school_id: schoolId, role: 'parent'})
-  // .where({school_id: schoolId, role: 'parent'})
   .orderBy("last_name");
 };
+
+const getUserChaperoneBySchoolId = schoolId => {
+  return db('users')
+  .where({school_id: schoolId, role: 'chaperone'})
+  .orderBy("last_name");
+};
+
 
 const getUserByEmail = email => {
   return db("users")
@@ -46,6 +52,7 @@ module.exports = {
   getUsers,
   getUserById,
   getUserBySchoolId,
+  getUserChaperoneBySchoolId,
   addUser,
   updateUser,
   deleteUser,

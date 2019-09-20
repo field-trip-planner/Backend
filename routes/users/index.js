@@ -51,6 +51,20 @@ router.get("/school/:id", async (req, res) => {
   }
 });
 
+router.get("/chaperones/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try{
+    const users = await db.getUserChaperoneBySchoolId(id)
+    res.status(200).json({chaperones: users});
+  } catch (error) {
+    res.status(500).json({
+      message: 'User Server Error',
+      error: error
+    })
+  }
+});
+
 router.put("/:id", async (req, res) => {
   const userInfo = req.body;
   const { id } = req.params;

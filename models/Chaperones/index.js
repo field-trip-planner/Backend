@@ -1,10 +1,8 @@
-const db = require("../../db");
+// const db = require("../../db");
 
-const add
+// const getChaperonesBySchoolId = id => {
 
-
-
-
+// }
 
 
 
@@ -21,6 +19,7 @@ const add
 
 
 
-module.exports = {
 
-}
+// module.exports = {
+
+// }
