@@ -24,7 +24,6 @@ const getUserChaperoneBySchoolId = schoolId => {
   .orderBy("last_name");
 };
 
-
 const getUserByEmail = email => {
   return db("users")
     .where({ email: email })
