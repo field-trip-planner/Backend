@@ -35,6 +35,27 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/teacher/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const teacherFieldTrips = await db.getFieldTripsByTeacherId(id);
+    if (teacherFieldTrips) {
+      res.status(200).json(teacherFieldTrips);
+    } else {
+      res
+        .status(404)
+        .json({ message: `The teacher has no field trips` });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: `fieldtrips Server Error `,
+      error: error
+    });
+  }
+
+})
+
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 

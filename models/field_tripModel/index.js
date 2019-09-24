@@ -10,6 +10,21 @@ async function getFieldTripById(id) {
     .first();
 }
 
+//Get Teachers Field Trips
+
+async function getFieldTripsByTeacherId(id) {
+  return await db("field_trips")
+  .where({creator_id: id});
+}
+
+
+
+//Get Chaperones Field Trips
+
+
+
+
+
 async function addFieldTrip(newTrip) {
   return db("field_trips")
     .insert(newTrip)
@@ -31,6 +46,7 @@ async function deleteFieldTrip(id) {
 module.exports = {
   getFieldTrips,
   getFieldTripById,
+  getFieldTripsByTeacherId,
   addFieldTrip,
   updateFieldTrip,
   deleteFieldTrip
