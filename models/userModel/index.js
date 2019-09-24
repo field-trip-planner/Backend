@@ -10,10 +10,20 @@ const getUserById = id => {
     .first();
 };
 
-//
-const getUserBySchoolId = (schoolId) => {
+//Parent-Student Relationship
+const getUserParentBySchoolId = (schoolId) => {
   return db("users")
   .where({school_id: schoolId, role: 'parent'})
+<<<<<<< HEAD
+=======
+  .orderBy("last_name");
+};
+
+//Get all chaperones by school id so that the Teacher can add them to field trip
+const getUserChaperoneBySchoolId = schoolId => {
+  return db('users')
+  .where({school_id: schoolId, role: 'chaperone'})
+>>>>>>> develop
   .orderBy("last_name");
 };
 
@@ -44,7 +54,8 @@ const deleteUser = id => {
 module.exports = {
   getUsers,
   getUserById,
-  getUserBySchoolId,
+  getUserParentBySchoolId,
+  getUserChaperoneBySchoolId,
   addUser,
   updateUser,
   deleteUser,

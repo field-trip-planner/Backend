@@ -1,3 +1,4 @@
+const uuid = require("uuid/v4");
 exports.seed = function(knex) {
   // Deletes ALL existing entries
   return knex("users")
@@ -37,6 +38,28 @@ exports.seed = function(knex) {
           role: 'chaperone',
           school_id: "9a3e0d6f-1e1a-4894-ae96-5a1b512483ec",
           phone_number: "789-456-1589"
+        },
+        {
+          id: uuid(),
+          first_name: "Dude",
+          last_name: "Chan",
+          email: "dudewheresmycar@ya.com",
+          password:
+            "$2a$10$2tnac9eDzYWlUPE8Gs7QeuFRskglSfGJ/xAeApqS.M19NAEnyhHwa",
+          role: 'chaperone',
+          school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
+          phone_number: "456-789-4575"
+        },
+        {
+          id: uuid(),
+          first_name: "Your",
+          last_name: "Mom",
+          email: "yourMom@ya.com",
+          password:
+            "$2a$10$2tnac9eDzYWlUPE8Gs7QeuFRskglSfGJ/xAeApqS.M19NAEnyhHwa",
+          role: 'chaperone',
+          school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
+          phone_number: "1-800-486-7895"
         }
       ]);
     });
