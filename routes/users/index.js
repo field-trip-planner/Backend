@@ -39,7 +39,7 @@ router.get("/school/:id", async (req, res) => {
 
   try {
 
-    const users = await db.getUserBySchoolId(id)
+    const users = await db.getUserParentBySchoolId(id)
     res.status(200).json({ users: users });
     
   } catch (error) {
