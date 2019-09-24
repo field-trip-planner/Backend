@@ -10,7 +10,6 @@ async function getFieldTripById(id) {
     .first();
 }
 
-<<<<<<< HEAD
 //Get Teachers Field Trips
 
 async function getFieldTripsByTeacherId(id) {
@@ -24,12 +23,6 @@ async function getFieldTripsByTeacherId(id) {
 
 
 
-
-=======
-// async function getFieldTripByTeacherId(id){
-
-// }
->>>>>>> develop
 
 async function addFieldTrip(newTrip) {
   return db("field_trips")

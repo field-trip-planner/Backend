@@ -10,19 +10,14 @@ const getStudentById = id => {
     .first();
 };
 
-<<<<<<< HEAD
 const getStudentByParentId = id => {
   return db('students')
     .where({parent_id: id})
     .returning('*');
 }
 
-const addStudent = student => {
-  return db("students")
-=======
 const addStudent = async student => {
   const students = await db("students")
->>>>>>> develop
     .insert(student)
     .returning("*");
   const [firstStudent] = students;

@@ -14,8 +14,6 @@ const getUserById = id => {
 const getUserParentBySchoolId = (schoolId) => {
   return db("users")
   .where({school_id: schoolId, role: 'parent'})
-<<<<<<< HEAD
-=======
   .orderBy("last_name");
 };
 
@@ -23,7 +21,6 @@ const getUserParentBySchoolId = (schoolId) => {
 const getUserChaperoneBySchoolId = schoolId => {
   return db('users')
   .where({school_id: schoolId, role: 'chaperone'})
->>>>>>> develop
   .orderBy("last_name");
 };
 

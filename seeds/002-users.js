@@ -18,6 +18,17 @@ exports.seed = function(knex) {
           phone_number: "666-898-1345"
         },
         {
+          id: "59495f61-f31c-444d-a284-b2233e5aa910",
+          first_name: "Count",
+          last_name: "Dooku",
+          email: "dooku@ya.com",
+          password:
+            "$2a$10$2tnac9eDzYWlUPE8Gs7QeuFRskglSfGJ/xAeApqS.M19NAEnyhHwa",
+          role: 'teacher',
+          school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
+          phone_number: "666-898-1341"
+        },
+        {
           id: "8b4eb7b4-893c-4bb2-8bbe-b75c4223854e",
           first_name: "Luke",
           last_name: "SkyWalker",
