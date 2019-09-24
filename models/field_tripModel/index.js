@@ -20,7 +20,10 @@ async function getFieldTripsByTeacherId(id) {
 
 
 //Get Chaperones Field Trips
-
+async function getFieldTripsByChaperoneId(id){
+  return await db("chaperones_field_trips")
+  .where({user_id:id});
+}
 
 
 
@@ -46,6 +49,7 @@ module.exports = {
   getFieldTrips,
   getFieldTripById,
   getFieldTripsByTeacherId,
+  getFieldTripsByChaperoneId,
   addFieldTrip,
   updateFieldTrip,
   deleteFieldTrip

@@ -35,6 +35,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//get teacher field trips
 router.get("/teacher/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -53,7 +54,27 @@ router.get("/teacher/:id", async (req, res) => {
       error: error
     });
   }
+})
 
+//get chaperone field trips
+router.get("/chaperone/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const chaperoneFieldTrips = await db.getFieldTripsByChaperoneId(id);
+    if (chaperoneFieldTrips) {
+      res.status(200).json(chaperoneFieldTrips);
+    } else {
+      res
+        .status(404)
+        .json({ message: `The chaperone has no field trips` });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: `fieldtrips Server Error `,
+      error: error
+    });
+  }
 })
 
 router.delete("/:id", async (req, res) => {
