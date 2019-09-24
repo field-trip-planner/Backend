@@ -10,6 +10,10 @@ async function getFieldTripById(id) {
     .first();
 }
 
+// async function getFieldTripByTeacherId(id){
+
+// }
+
 async function addFieldTrip(newTrip) {
   return db("field_trips")
     .insert(newTrip)
