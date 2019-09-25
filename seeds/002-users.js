@@ -82,6 +82,17 @@ exports.seed = function(knex) {
           role: 'chaperone',
           school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
           phone_number: "1-800-486-7895"
+        },
+        {
+          id: '456a1336-1ebc-47ab-abb0-4dec6c597440',
+          first_name: "Your",
+          last_name: "Dad",
+          email: "yourDad@ya.com",
+          password:
+            "$2a$10$2tnac9eDzYWlUPE8Gs7QeuFRskglSfGJ/xAeApqS.M19NAEnyhHwa",
+          role: 'chaperone',
+          school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
+          phone_number: "1-800-486-7859"
         }
       ]);
     });

@@ -41,8 +41,6 @@ router.get("/:id", async (req, res) => {
 router.get("/teacher/:id", async (req, res) => {
   const { id } = req.params;
 
-
-
   try {
     const teacherFieldTrips = await db.getFieldTripsByTeacherId(id);
     if (teacherFieldTrips) {
@@ -129,14 +127,28 @@ router.get("/chaperone/:id", async (req, res) => {
 });
 
 
-async function handleStudentFieldTrips(arr){
+
+async function handleParentFieldTrips(arr){
   let fieldTripsList = [];
   for(let i = 0; i < arr.length; i++){
-    fieldTripsList.push(await studentsFieldTripsModel.getStudentsFieldtripsByStudentId(arr[i]));
+    fieldTripsList.push(await db.getFieldTripById(arr[i].field_trip_id));
   }
   return fieldTripsList;
 }
 
+
+async function handleStudentFieldTrips(arr){
+  let fieldTripsList = [];
+  for(let i = 0; i < arr.length; i++){
+    // fieldTripsList.push(await studentsFieldTripsModel.getStudentsFieldtripsByStudentId(arr[i]));
+    let studentFieldTrips = await studentsFieldTripsModel.getStudentsFieldtripsByStudentId(arr[i]);
+    for(let i = 0; i < studentFieldTrips.length; i++){
+      fieldTripsList.push(studentFieldTrips[i])
+    }
+  }
+  // return fieldTripsList;
+  return await handleParentFieldTrips(fieldTripsList);
+}
 
 
 router.get("/parent/:id", async (req, res) => {
