@@ -4,10 +4,11 @@ const getUsers = () => {
   return db("users");
 };
 
-const getUserById = id => {
-  return db("users")
+const getUserById = async id => {
+  const userObject = await db("users")
     .where({ id })
     .first();
+  return (user = { ...userObject, password: "" });
 };
 const getUserByEmail = email => {
   return db("users")
