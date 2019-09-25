@@ -16,6 +16,10 @@ const getStudentStatusesByTripId = tripId => {
     .returning("*");
 };
 
+const getStudentsFieldtripsByStudentId = id => {
+  return db("students_field_trips")
+    .where({ student_id : id });
+};
 
 const addStudentsFieldtrips = async studentStatus => {
   const newStatus = await db("students_field_trips")
@@ -51,6 +55,7 @@ module.exports = {
   getStudentsFieldtrips,
   getStudentsFieldtripsById,
   getStudentStatusesByTripId,
+  getStudentsFieldtripsByStudentId,
   addStudentsFieldtrips,
   updateStudentsFieldtrips,
   deleteStudentsFieldtrips

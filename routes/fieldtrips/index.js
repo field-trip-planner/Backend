@@ -1,6 +1,8 @@
 const express = require("express");
 const uuid = require("uuid/v4");
 const db = require("../../models/field_tripModel/index");
+const studentModel = require("../../models/studentModel");
+const studentsFieldTripsModel = require("../../models/students_fieldtripsModel")
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -39,6 +41,8 @@ router.get("/:id", async (req, res) => {
 router.get("/teacher/:id", async (req, res) => {
   const { id } = req.params;
 
+
+
   try {
     const teacherFieldTrips = await db.getFieldTripsByTeacherId(id);
     if (teacherFieldTrips) {
@@ -56,14 +60,61 @@ router.get("/teacher/:id", async (req, res) => {
   }
 })
 
-//get chaperone field trips
+
+// async function getChaperones(id) {
+//   try {
+//     const data = await db("chaperones_field_trips").where({
+//       field_trip_id: id
+//     });
+//     const userIDs = [];
+//     data.forEach(d => {
+//       return userIDs.push(d.user_id);
+//     });
+//     const users = mapUsers(userIDs);
+//     return users;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
+
+// async function mapUsers(arr) {
+//   let data = [];
+//   for (i = 0; i < arr.length; i++) {
+//     data.push(await dbUsers.getUserById(arr[i]));
+//   }
+//   return data;
+// }
+
+
+
+
+
+async function handleChaperonesFieldTrips(arr) {
+  let fieldTripsList = [];
+  for (let i = 0; i < arr.length; i++) {
+    fieldTripsList.push(await db.getFieldTripById(arr[i]));
+  }
+  console.log(fieldTripsList)
+  return fieldTripsList;
+}
+
+//get chaperone field trips by their id
 router.get("/chaperone/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const chaperoneFieldTrips = await db.getFieldTripsByChaperoneId(id);
+    const chaperoneFieldTrips = await db.getChaperoneFieldTripsById(id);
     if (chaperoneFieldTrips) {
-      res.status(200).json(chaperoneFieldTrips);
+
+      const chaperoneFieldTripIds = [];
+
+      chaperoneFieldTrips.forEach(chaperone => {
+        chaperoneFieldTripIds.push(chaperone.field_trip_id)
+      });
+
+      const fieldTrips = await handleChaperonesFieldTrips(chaperoneFieldTripIds);
+      console.log('field trips here', fieldTrips)
+      res.status(200).json(fieldTrips)
     } else {
       res
         .status(404)
@@ -75,7 +126,50 @@ router.get("/chaperone/:id", async (req, res) => {
       error: error
     });
   }
+});
+
+
+async function handleStudentFieldTrips(arr){
+  let fieldTripsList = [];
+  for(let i = 0; i < arr.length; i++){
+    fieldTripsList.push(await studentsFieldTripsModel.getStudentsFieldtripsByStudentId(arr[i]));
+  }
+  return fieldTripsList;
+}
+
+
+
+router.get("/parent/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const parentStudents = await studentModel.getStudentByParentId(id);
+    if (parentStudents) {
+      const studentIds = [];
+
+      parentStudents.forEach(student => {
+        studentIds.push(student.id);
+      });
+
+      const fieldTrips = await handleStudentFieldTrips(studentIds);
+      res.status(200).json(fieldTrips);
+    } else {
+      res
+        .status(404)
+        .json({ message: `The parent has no students` });
+    }
+
+  } catch (error) {
+    res.status(500).json({
+      message: `fieldtrips Server Error `,
+      error: error
+    });
+  }
 })
+
+
+
+
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;

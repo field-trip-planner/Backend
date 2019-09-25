@@ -2,8 +2,18 @@ const db = require('../../db');
 const studentModel = require("../studentModel");
 
 
+
+// const handleParentsFieldTrips = async(arr) => {
+
+// }
+
+
+
+
 const getParentStudentFieldTrips = async id => {
-  return await studentModel.getStudentByParentId(id);
+  const parentsStudents = await studentModel.getStudentByParentId(id);
+  return parentsStudents;
+
 }
 
 

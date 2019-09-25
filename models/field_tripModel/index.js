@@ -19,11 +19,23 @@ async function getFieldTripsByTeacherId(id) {
 
 
 
-//Get Chaperones Field Trips
+// //Get Chaperones Field Trips
 async function getFieldTripsByChaperoneId(id){
-  return await db("chaperones_field_trips")
-  .where({user_id:id});
+  // return await db("chaperones_field_trips")
+  // .where({user_id:id})
+  const chaperonesFieldTrips = await db("chaperones_field_trips")
+  .where({ user_id: id });
+
 }
+
+// //Get Chaperones Field Trips
+async function getChaperoneFieldTripsById(id){
+  return await db("chaperones_field_trips")
+  .where({user_id:id})
+  // const chaperonesFieldTrips = await db("chaperones_field_trips")
+  // .where({ user_id: id });
+}
+
 
 
 
@@ -50,6 +62,7 @@ module.exports = {
   getFieldTripById,
   getFieldTripsByTeacherId,
   getFieldTripsByChaperoneId,
+  getChaperoneFieldTripsById,
   addFieldTrip,
   updateFieldTrip,
   deleteFieldTrip

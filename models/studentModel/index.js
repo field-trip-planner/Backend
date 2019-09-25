@@ -27,11 +27,6 @@ const addStudent = async student => {
   return firstStudent;
 };
 
-// const addStudent = student => {
-//   return db("students")
-//     .insert(student)
-//     .returning("*");
-// };
 
 const updateStudent = (id, changes) => {
   return db("students")
