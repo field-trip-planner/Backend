@@ -37,6 +37,7 @@ server.use(passport.session());
 
 // define router paths
 const FieldTripRouter = require("./routes/fieldtrips");
+const MyFieldTripsRouter = require("./routes/myFieldTrips");
 const SchoolsRouter = require("./routes/schools");
 const StudentsRouter = require("./routes/students");
 const StudentsFieldTripsRouter = require("./routes/students_fieldtrips");
@@ -48,6 +49,7 @@ const chaperonesRouter = require("./routes/chaperones");
 
 // router obj is isolated instance
 server.use("/fieldtrips", mw.checkAuth, FieldTripRouter);
+server.use("/myfieldtrips", mw.checkAuth, MyFieldTripsRouter);
 server.use("/schools", SchoolsRouter);
 server.use("/students", mw.checkAuth, StudentsRouter);
 server.use("/students_fieldtrips", mw.checkAuth, StudentsFieldTripsRouter);

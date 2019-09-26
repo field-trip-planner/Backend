@@ -25,7 +25,15 @@ exports.seed = function(knex) {
           last_name: "Banner",
           school_id: "9a3e0d6f-1e1a-4894-ae96-5a1b512483ec",
           parent_id: "8b4eb7b4-893c-4bb2-8bbe-b75c4223854e"
+        },
+        {
+          id: "1611836b-c4b6-4fd8-9174-7bcc1b162722",
+          first_name: "Ben",
+          last_name: "Solo",
+          school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
+          parent_id: "8b4eb7b4-893c-4bb2-8bbe-b75c42238544"
         }
       ]);
     });
 };
+

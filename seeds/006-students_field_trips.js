@@ -32,7 +32,18 @@ exports.seed = function(knex) {
           paid_status: true,
           supplies_status: false,
           permission_status: true
+        },
+        {
+          id: uuid(),
+          student_id: "1611836b-c4b6-4fd8-9174-7bcc1b162722",
+          field_trip_id: "790cb09f-a2e9-420f-a3ac-9d35bdb72118",
+          going_status: true,
+          paid_status: true,
+          supplies_status: true,
+          permission_status: true
         }
       ]);
     });
 };
+
+
