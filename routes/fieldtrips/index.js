@@ -2,7 +2,8 @@ const express = require("express");
 const uuid = require("uuid/v4");
 const db = require("../../models/field_tripModel/index");
 const studentModel = require("../../models/studentModel");
-const studentsFieldTripsModel = require("../../models/students_fieldtripsModel")
+const studentsFieldTripsModel = require("../../models/students_fieldtripsModel");
+const chaperonesFieldTripsModel = require("../../models/chaperones_field_tripsModel");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -59,33 +60,6 @@ router.get("/teacher/:id", async (req, res) => {
 })
 
 
-// async function getChaperones(id) {
-//   try {
-//     const data = await db("chaperones_field_trips").where({
-//       field_trip_id: id
-//     });
-//     const userIDs = [];
-//     data.forEach(d => {
-//       return userIDs.push(d.user_id);
-//     });
-//     const users = mapUsers(userIDs);
-//     return users;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
-
-// async function mapUsers(arr) {
-//   let data = [];
-//   for (i = 0; i < arr.length; i++) {
-//     data.push(await dbUsers.getUserById(arr[i]));
-//   }
-//   return data;
-// }
-
-
-
-
 
 async function handleChaperonesFieldTrips(arr) {
   let fieldTripsList = [];
@@ -101,7 +75,7 @@ router.get("/chaperone/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const chaperoneFieldTrips = await db.getChaperoneFieldTripsById(id);
+    const chaperoneFieldTrips = await chaperonesFieldTripsModel.getChaperoneFieldTripsById(id);
     if (chaperoneFieldTrips) {
 
       const chaperoneFieldTripIds = [];

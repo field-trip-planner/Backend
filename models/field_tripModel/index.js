@@ -10,34 +10,11 @@ async function getFieldTripById(id) {
     .first();
 }
 
-//Get Teachers Field Trips
-
+//Get Teacher's Field Trips
 async function getFieldTripsByTeacherId(id) {
   return await db("field_trips")
   .where({creator_id: id});
 }
-
-
-
-// //Get Chaperones Field Trips
-async function getFieldTripsByChaperoneId(id){
-  // return await db("chaperones_field_trips")
-  // .where({user_id:id})
-  const chaperonesFieldTrips = await db("chaperones_field_trips")
-  .where({ user_id: id });
-
-}
-
-// //Get Chaperones Field Trips
-async function getChaperoneFieldTripsById(id){
-  return await db("chaperones_field_trips")
-  .where({user_id:id})
-  // const chaperonesFieldTrips = await db("chaperones_field_trips")
-  // .where({ user_id: id });
-}
-
-
-
 
 async function addFieldTrip(newTrip) {
   return db("field_trips")
@@ -61,8 +38,6 @@ module.exports = {
   getFieldTrips,
   getFieldTripById,
   getFieldTripsByTeacherId,
-  getFieldTripsByChaperoneId,
-  getChaperoneFieldTripsById,
   addFieldTrip,
   updateFieldTrip,
   deleteFieldTrip

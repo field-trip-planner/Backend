@@ -33,12 +33,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//get users that are parents by school id
 router.get("/school/:id", async (req, res) => {
   //id is the school id
   const { id } = req.params;
 
   try {
-
+    //db method handles getting users with role of parent
     const users = await db.getUserParentBySchoolId(id)
     res.status(200).json({ users: users });
     
@@ -51,10 +52,12 @@ router.get("/school/:id", async (req, res) => {
   }
 });
 
+//get users that are chaperones by school id
 router.get("/chaperones/:id", async (req, res) => {
   const { id } = req.params;
 
   try{
+      //db method handles getting users with role of chaperone
     const users = await db.getUserChaperoneBySchoolId(id)
     res.status(200).json({chaperones: users});
   } catch (error) {
