@@ -15,7 +15,7 @@ const server = express();
 server.use(
   cors({
     credentials: true,
-    origin: process.env.URL,
+    origin: process.env.URL
     // origin: "https://fieldtripplanner-dd4dc.web.app"
   })
 );
@@ -45,6 +45,7 @@ const UsersRouter = require("./routes/users");
 const loginRouter = require("./routes/auth/login");
 const logoutRouter = require("./routes/auth/logout");
 const registerRouter = require("./routes/auth/register");
+const chaperonesRouter = require("./routes/chaperones");
 
 // router obj is isolated instance
 server.use("/fieldtrips", mw.checkAuth, FieldTripRouter);
@@ -56,6 +57,7 @@ server.use("/users", mw.checkAuth, UsersRouter);
 server.use("/login", loginRouter);
 server.use("/logout", logoutRouter);
 server.use("/register", registerRouter);
+server.use("/chaperones", chaperonesRouter);
 
 server.get("/", (req, res) => {
   res.status(200).json("Server is up");
