@@ -56,7 +56,7 @@ router.get("/chaperones/:id", async (req, res) => {
 
   try{
     const users = await db.getUserChaperoneBySchoolId(id)
-    res.status(200).json({chaperones: users});
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).json({
       message: 'User Server Error',
