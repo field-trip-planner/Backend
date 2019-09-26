@@ -34,7 +34,7 @@ exports.seed = function(knex) {
           last_name: "SkyWalker",
           email: "ls@ya.com",
           password:
-            "$2a$10$XqFsTM/LnALccOqBNPBwuuKlaNEDZPiOcqhIyCw3A/F3R1ut1DEHm",
+            "$2a$10$2tnac9eDzYWlUPE8Gs7QeuFRskglSfGJ/xAeApqS.M19NAEnyhHwa",
           role: 'parent',
           school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
           phone_number: "786-898-1005"
@@ -45,7 +45,7 @@ exports.seed = function(knex) {
           last_name: "Solo",
           email: "aluminumfalcon@ya.com",
           password:
-            "$2a$10$XqFsTM/LnALccOqBNPBwuuKlaNEDZPiOcqhIyCw3A/F3R1ut1DEHf",
+            "$2a$10$2tnac9eDzYWlUPE8Gs7QeuFRskglSfGJ/xAeApqS.M19NAEnyhHwa",
           role: 'parent',
           school_id: "4187269f-d1fa-41fe-ad34-2e7d74a9031a",
           phone_number: "786-898-1045"

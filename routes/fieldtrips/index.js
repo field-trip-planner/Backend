@@ -148,6 +148,7 @@ async function handleStudentFieldTrips(arr){
   }
   // return fieldTripsList;
   return await handleParentFieldTrips(fieldTripsList);
+  // return {parentsFieldTrips: await handleParentFieldTrips(fieldTripsList), studentFieldTrips: fieldTripsList}
 }
 
 
@@ -165,6 +166,7 @@ router.get("/parent/:id", async (req, res) => {
 
       const fieldTrips = await handleStudentFieldTrips(studentIds);
       res.status(200).json(fieldTrips);
+      // res.status(200).json({fieldTrips: fieldTrips.parentsFieldTrips, parentStudents: parentStudents, studentsToFieldTrips: fieldTrips.studentFieldTrips })
     } else {
       res
         .status(404)
