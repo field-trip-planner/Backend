@@ -8,7 +8,6 @@ const mw = require("./middleware");
 const uuid = require("uuid/v4");
 const methodOverride = require("method-override");
 require("./config")(passport);
-const db = require("./models/chaperoneModel");
 
 const server = express();
 
