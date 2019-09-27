@@ -17,26 +17,26 @@ async function handleChaperonesFieldTrips(arr) {
   return fieldTripsList;
 }
 
-async function handleParentFieldTrips(arr){
+async function handleParentFieldTrips(arr) {
   let fieldTripsList = [];
-  for(let i = 0; i < arr.length; i++){
+  for (let i = 0; i < arr.length; i++) {
     fieldTripsList.push(await db.getFieldTripById(arr[i].field_trip_id));
   }
   return fieldTripsList;
 }
 
-async function handleStudentFieldTrips(arr){
+async function handleStudentFieldTrips(arr) {
   let fieldTripsList = [];
-  for(let i = 0; i < arr.length; i++){
+  for (let i = 0; i < arr.length; i++) {
     // fieldTripsList.push(await studentsFieldTripsModel.getStudentsFieldtripsByStudentId(arr[i]));
     let studentFieldTrips = await studentsFieldTripsModel.getStudentsFieldtripsByStudentId(arr[i]);
-    for(let i = 0; i < studentFieldTrips.length; i++){
-      fieldTripsList.push(studentFieldTrips[i])
+    for (let z = 0; z < studentFieldTrips.length; z++) {
+      fieldTripsList.push(studentFieldTrips[z])
     }
   }
   // return fieldTripsList;
-  return await handleParentFieldTrips(fieldTripsList);
-  // return {parentsFieldTrips: await handleParentFieldTrips(fieldTripsList), studentFieldTrips: fieldTripsList}
+  // return await handleParentFieldTrips(fieldTripsList);
+  return { parentsFieldTrips: await handleParentFieldTrips(fieldTripsList), studentFieldTrips: fieldTripsList }
 }
 //-----------------------------------------------------------------------------------------------------
 
@@ -112,8 +112,50 @@ router.get("/parent/:id", async (req, res) => {
       });
 
       const fieldTrips = await handleStudentFieldTrips(studentIds);
-      res.status(200).json(fieldTrips);
-      // res.status(200).json({fieldTrips: fieldTrips.parentsFieldTrips, parentStudents: parentStudents, studentsToFieldTrips: fieldTrips.studentFieldTrips })
+      // res.status(200).json(fieldTrips);
+      // let fieldTripsWithStudents = fieldTrips.parentsFieldTrips;\
+
+      let students = parentStudents;
+      let fieldTripsWithParents = [];
+      fieldTrips.parentsFieldTrips.forEach(fieldTrip => {
+        if (!fieldTripsWithParents.length) {
+          fieldTripsWithParents.push({ ...fieldTrip, students: [] })
+        } else {
+          fieldTripsWithParents.forEach(addedFieldTrip => {
+            if (!addedFieldTrip.id === fieldTrip.id) {
+              fieldTripsWithParents.push({ ...fieldTrip, students: [] })
+            }
+          })
+        }
+      })
+      console.log(fieldTripsWithParents)
+
+      fieldTripsWithParents.forEach(parentFieldTrip => {
+        fieldTrips.studentFieldTrips.forEach(studentFieldTrip => {
+          if (parentFieldTrip.id === studentFieldTrip.field_trip_id) {
+            for (let i = 0; i < students.length; i++) {
+              if (studentFieldTrip.student_id === students[i].id) {
+                parentFieldTrip.students = [...parentFieldTrip.students, { ...students[i] }];
+                // console.log(parentFieldTrip.students)
+
+                let mainSlice = students.slice(0, i);
+                let slice2 = students.slice(i + 1)
+                slice2.forEach(item => {
+                  mainSlice.push(item);
+                });
+                students = mainSlice;
+                break;
+              } else {
+                continue;
+              }
+            }
+          }
+        })
+      })
+      console.log(fieldTripsWithParents[0].students)
+
+      // res.status(200).json({fieldTrips: fieldTripsWithParents, parentStudents: parentStudents, studentsToFieldTrips: fieldTrips.studentFieldTrips })
+      res.status(200).json(fieldTripsWithParents);
     } else {
       res
         .status(404)

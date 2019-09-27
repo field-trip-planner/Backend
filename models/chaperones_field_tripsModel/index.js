@@ -8,6 +8,7 @@ async function getChaperoneFieldTripsById(id){
 }
 
 
+
 module.exports = {
   getChaperoneFieldTripsById,
 };
