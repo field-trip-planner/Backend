@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
     });
   }
 });
-////
+////RELATIONAL
 router.get("/parents/:id", async(req, res) => {
   const { id } = req.params
   try{
