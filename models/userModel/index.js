@@ -13,6 +13,7 @@ const getUserById = id => {
 //Parent-Student Relationship
 const getUserParentBySchoolId = (schoolId) => {
   return db("users")
+  .select("last_name", "first_name", "school_id", "id")
   .where({school_id: schoolId, role: 'parent'})
   .orderBy("last_name");
 };
