@@ -13,7 +13,17 @@ router.get("/", async (req, res) => {
     });
   }
 });
-
+////RELATIONAL
+router.get("/parents/:id", async(req, res) => {
+  const { id } = req.params
+  try{
+    const parents = await db.getUserParentBySchoolId(id)
+    res.status(200).json(parents)
+  } catch(err) {
+    res.status(500).json({ message: "User Server error", err:err })
+  }
+})
+////
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
