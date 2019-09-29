@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("../../models/userModel/index");
+const dbChaperone = require("../../models/chaperoneModel");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -52,7 +53,7 @@ router.get("/school/:id", async (req, res) => {
     //db method handles getting users with role of parent
     const users = await db.getUserParentBySchoolId(id)
     res.status(200).json({ users: users });
-    
+
   } catch (error) {
 
     res.status(500).json({
@@ -62,14 +63,28 @@ router.get("/school/:id", async (req, res) => {
   }
 });
 
-//get users that are chaperones by school id
-router.get("/chaperones/:id", async (req, res) => {
-  const { id } = req.params;
+const getAvailableChaperoneBySchoolAndTripIds = async (schoolId, tripId) => {
+  //db method handles getting users with role of chaperone
+  const users = await db.getUserChaperoneBySchoolId(schoolId);
 
-  try{
-      //db method handles getting users with role of chaperone
-    const users = await db.getUserChaperoneBySchoolId(id)
-    res.status(200).json(users);
+  //This is to display correct list of possible chaperones on modal to choose from that are not already displayed in the chaperone table from the fieldtrip detail view
+  const chaperonesByTripId = await dbChaperone.getChaperones(tripId);
+  return users.filter((user) => {
+    return !chaperonesByTripId.find((chaperone) => {
+      return chaperone.id === user.id
+    });
+  });
+};
+
+//get users that are chaperones by school id
+router.get("/chaperones/:tripId/:schoolId", async (req, res) => {
+  const { tripId, schoolId } = req.params;
+  // console.log("tripId", tripId);
+  try {
+    const filteredChaperones =
+      await getAvailableChaperoneBySchoolAndTripIds(schoolId, tripId);
+
+    res.status(200).json(filteredChaperones);
   } catch (error) {
     res.status(500).json({
       message: 'User Server Error',
