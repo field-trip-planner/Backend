@@ -2,36 +2,51 @@ const db = require("../../db");
 const dbUsers = require("../userModel");
 // const uuid = require("uuid/v4");
 
+// pass in chaperones_field_trips data object
+async function getChaperoneData(chaperone) {
+  const chaperoneFullData = await dbUsers.getUserById(chaperone.user_id);
+
+  console.log('chaperoneFullData', chaperoneFullData)
+  return chaperoneFullData;
+}
+
 async function getChaperones(id) {
   try {
     const data = await db("chaperones_field_trips").where({
       field_trip_id: id
     });
-    const userIDs = [];
-    data.forEach(d => {
-      return userIDs.push(d.user_id);
-    });
-    const users = mapUsers(userIDs);
-    return users;
+    console.log('data:', data);
+    const chaperones = await Promise.all(data.map(getChaperoneData));
+
+    console.log('getAllChaperoneData', chaperones)
+
+    // Was looping a second time here
+    // const userIDs = [];
+    // data.forEach(d => {
+    //   return userIDs.push(d.user_id);
+    // });
+    // const users = mapUsers(userIDs);
+    // console.log('users:', users)
+    return chaperones;
   } catch (err) {
     console.log(err);
   }
 }
 
-async function mapUsers(arr) {
-  let data = [];
-  for (i = 0; i < arr.length; i++) {
-    data.push(await dbUsers.getUserById(arr[i]));
-  }
-  return data;
-}
+// Code below returns an array of promises. This appeared to cause a bug where sometimes duplicate data was being rendered on the FE
+// async function mapUsers(arr) {
+//   let data = [];
+//   for (i = 0; i < arr.length; i++) {
+//     data.push(await dbUsers.getUserById(arr[i]));
+//   }
+//   return data;
+// }
 
 async function addChapToFieldTrip(newChap) {
   return db('chaperones_field_trips')
   .insert(newChap)
   .returning("*");
 }
-
 
 // async function execute() {
 //   try {
