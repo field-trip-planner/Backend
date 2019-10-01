@@ -6,6 +6,7 @@ function getChaperoneFieldTripsById(id){
   .where({ user_id: id });
 }
 
+
 module.exports = {
   getChaperoneFieldTripsById,
 };
