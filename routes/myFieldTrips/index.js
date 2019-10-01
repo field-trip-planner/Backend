@@ -28,14 +28,11 @@ async function handleParentFieldTrips(arr) {
 async function handleStudentFieldTrips(arr) {
   let fieldTripsList = [];
   for (let i = 0; i < arr.length; i++) {
-    // fieldTripsList.push(await studentsFieldTripsModel.getStudentsFieldtripsByStudentId(arr[i]));
     let studentFieldTrips = await studentsFieldTripsModel.getStudentsFieldtripsByStudentId(arr[i]);
     for (let z = 0; z < studentFieldTrips.length; z++) {
       fieldTripsList.push(studentFieldTrips[z])
     }
   }
-  // return fieldTripsList;
-  // return await handleParentFieldTrips(fieldTripsList);
   return { parentsFieldTrips: await handleParentFieldTrips(fieldTripsList), studentFieldTrips: fieldTripsList }
 }
 //-----------------------------------------------------------------------------------------------------
@@ -112,8 +109,6 @@ router.get("/parent/:id", async (req, res) => {
       });
 
       const fieldTrips = await handleStudentFieldTrips(studentIds);
-      // res.status(200).json(fieldTrips);
-      // let fieldTripsWithStudents = fieldTrips.parentsFieldTrips;\
 
       let students = parentStudents;
       let fieldTripsWithParents = [];
@@ -136,7 +131,6 @@ router.get("/parent/:id", async (req, res) => {
             for (let i = 0; i < students.length; i++) {
               if (studentFieldTrip.student_id === students[i].id) {
                 parentFieldTrip.students = [...parentFieldTrip.students, { ...students[i] }];
-                // console.log(parentFieldTrip.students)
 
                 let mainSlice = students.slice(0, i);
                 let slice2 = students.slice(i + 1)
@@ -154,7 +148,6 @@ router.get("/parent/:id", async (req, res) => {
       })
       console.log(fieldTripsWithParents[0].students)
 
-      // res.status(200).json({fieldTrips: fieldTripsWithParents, parentStudents: parentStudents, studentsToFieldTrips: fieldTrips.studentFieldTrips })
       res.status(200).json(fieldTripsWithParents);
     } else {
       res
