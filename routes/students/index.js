@@ -37,8 +37,8 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { first_name, last_name, field_trip_id, } = req.body;
-  const newStudent = { id: uuid(), first_name, last_name };
+  const { first_name, last_name, field_trip_id, school_id, parent_id } = req.body;
+  const newStudent = { id: uuid(), first_name, last_name, school_id, parent_id };
 
   try {
     if (first_name === "" || last_name === "") {
