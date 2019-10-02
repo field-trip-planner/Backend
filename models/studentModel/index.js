@@ -10,11 +10,23 @@ const getStudentById = id => {
     .first();
 };
 
-const addStudent = student => {
-  return db("students")
+const getStudentByParentId = id => {
+  return db('students')
+    .where({parent_id: id})
+    .returning('*');
+}
+
+const addStudent = async student => {
+  const students = await db("students")
     .insert(student)
     .returning("*");
+  const [firstStudent] = students;
+  console.log("students", students);
+  //return the first student object inserted
+  //  from the students array
+  return firstStudent;
 };
+
 
 const updateStudent = (id, changes) => {
   return db("students")
@@ -31,6 +43,7 @@ const deleteStudent = id => {
 module.exports = {
   getStudents,
   getStudentById,
+  getStudentByParentId,
   addStudent,
   updateStudent,
   deleteStudent

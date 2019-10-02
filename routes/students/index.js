@@ -1,6 +1,7 @@
 const express = require("express");
 const uuid = require("uuid/v4");
 const db = require("../../models/studentModel/index");
+const dbFieldTripStudents = require("../../models/students_fieldtripsModel/index");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -36,14 +37,26 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { first_name, last_name } = req.body;
-  const newStudent = { id: uuid(), ...req.body };
+  const { first_name, last_name, field_trip_id, school_id, parent_id } = req.body;
+  const newStudent = { id: uuid(), first_name, last_name, school_id, parent_id };
 
   try {
     if (first_name === "" || last_name === "") {
       res.status(400).json({ message: `Please provide first AND last name` });
     } else {
       const student = await db.addStudent(newStudent);
+
+      // add to student_field_trips table
+      const newStudentStatus = await dbFieldTripStudents.addStudentsFieldtrips({
+        id: uuid(),
+        student_id: student.id,
+        field_trip_id,
+        paid_status: false,
+        permission_status: false,
+        supplies_status: false,
+        going_status: false
+      })
+
       res.status(201).json(student);
     }
   } catch (error) {
