@@ -19,7 +19,7 @@ async function getFieldTripsByTeacherId(id) {
 async function addFieldTrip(newTrip) {
   return db("field_trips")
     .insert(newTrip)
-    .returning(["id", "name"]);
+    .returning("*");
 }
 
 async function updateFieldTrip(id, updates) {
