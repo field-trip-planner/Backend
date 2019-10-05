@@ -55,9 +55,13 @@ router.post("/", async (req, res) => {
         permission_status: false,
         supplies_status: false,
         going_status: false
-      })
+      });
 
-      res.status(201).json(student);
+      // Here in the json response, we're merging student and newStudentStatus
+       // where student.id will get overwritten by newStudentStatus.id
+        // because we want the student_field_trips id.
+         // This is just to match what the student status table expects
+      res.status(201).json({...student, ...newStudentStatus});
     }
   } catch (error) {
     res.status(500).json({

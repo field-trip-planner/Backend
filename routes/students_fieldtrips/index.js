@@ -32,8 +32,12 @@ router.get("/:tripId/statuses", async (req, res) => {
       totalPages
     } = await db.getStudentStatusesByTripIdPaginated(tripId, page, perPage, sortBy, direction);
 
-
-    res.status(200).json({completeStudentStatusesSorted, totalCount, totalPages});
+    res.status(200).json({
+      completeStudentStatusesSorted,
+      totalCount,
+      totalPages,
+      perPage: Number(perPage)
+    });
   } catch (error) {
     res.status(500).json({
       message: `error getting students statuses for trip id: ${tripId}`,
@@ -66,14 +70,18 @@ router.put("/:studentStatusId", async (req, res) => {
   const updatedStatus = req.body;
   const { studentStatusId } = req.params;
 
-  console.log("studentStatus::", updatedStatus);
-  console.log("studentStatusId::", studentStatusId);
+  // console.log("studentStatus::", updatedStatus);
+  // console.log("studentStatusId::", studentStatusId);
   try {
     const studentStatus = await db.updateStudentsFieldtrips(studentStatusId, updatedStatus);
-
     console.log("studentStatus::", studentStatus);
 
-    res.status(200).json(studentStatus);
+    const isGoing = studentStatus.paid_status &&
+      studentStatus.permission_status &&
+      studentStatus.supplies_status;
+    const studentStatusWithUpdatedGoingStatus = await db.updateStudentsFieldtrips(studentStatusId, {going_status: isGoing})
+
+    res.status(200).json(studentStatusWithUpdatedGoingStatus);
 
   } catch (error) {
     res.status(500).json({
