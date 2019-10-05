@@ -27,13 +27,26 @@ const getStudentsFieldtripsById = id => {
 //     .returning("*");
 // };
 
-const getStudentStatusesByTripIdPaginated = async (tripId, page, perPage) => {
+const getStudentStatusesByTripIdPaginated = async (tripId, page, perPage, sortBy, direction ) => {
   const offset = (page - 1) * perPage;
 
-  const studentStatuses = await db("students_field_trips")
-    .where({ field_trip_id: tripId }).offset(offset).limit(perPage);
+  const completeStudentStatusesSorted = await db("students_field_trips")
+    .join('students', 'students_field_trips.student_id', 'students.id')
+    .select('students_field_trips.id as id',
+      'students.id as student_id',
+      'students.first_name',
+      'students.last_name',
+      'students.school_id',
+      'students.created_at',
+      'students_field_trips.paid_status',
+      'students_field_trips.permission_status',
+      'students_field_trips.supplies_status'
+    )
+    .where({ field_trip_id: tripId }).orderBy(sortBy, direction).offset(offset).limit(perPage);
 
-    console.log('STUDENTSPerPage:::', studentStatuses);
+  console.log('ALLSTUDENTSStatusesJOINSELECT-ASC-BY-DATE:::', completeStudentStatusesSorted);
+
+  // => Desc = newest to oldest
 
   // getting the count
   const countObject = await db("students_field_trips")
@@ -46,7 +59,7 @@ const getStudentStatusesByTripIdPaginated = async (tripId, page, perPage) => {
 
   return {
     totalCount,
-    studentStatuses,
+    completeStudentStatusesSorted,
     totalPages
   }
 };
