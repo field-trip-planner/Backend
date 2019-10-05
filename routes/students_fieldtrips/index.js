@@ -16,11 +16,41 @@ router.get("/", async (req, res) => {
   }
 });
 
+function compareValues(key, order) {
+  return function(a, b) {
+    if(!a.hasOwnProperty(key) ||
+      !b.hasOwnProperty(key)) {
+      return 0;
+    }
+
+    const varA = (typeof a[key] === 'string') ?
+      a[key].toUpperCase() : a[key];
+    const varB = (typeof b[key] === 'string') ?
+      b[key].toUpperCase() : b[key];
+
+    let comparison = 0;
+    if (varA > varB) {
+      comparison = 1;
+    } else if (varA < varB) {
+      comparison = -1;
+    }
+    return (
+      (order === 'desc') ?
+        (comparison * -1) : comparison
+    );
+  };
+}
+
 router.get("/:tripId/statuses", async (req, res) => {
   const { tripId } = req.params;
+  const { page = 1, perPage = 5, sortBy = 'last_name', direction = 'asc' } = req.query;
 
   try {
-    const studentStatuses = await db.getStudentStatusesByTripId(tripId); // 1
+    const {
+      totalCount,
+      studentStatuses,
+      totalPages
+    } = await db.getStudentStatusesByTripIdPaginated(tripId, page, perPage); // 1
 
     const getStudentFromDb = async studentStatus => {
       const student = await dbStudents.getStudentById(studentStatus.student_id);
@@ -38,7 +68,11 @@ router.get("/:tripId/statuses", async (req, res) => {
 
     const completeStudentStatuses = await getAllStudentStatusesData(); // 2
 
-    res.status(200).json(completeStudentStatuses);
+    // Sorted List of the completeStudentStatuses
+    const completeStudentStatusesSorted =
+      [...completeStudentStatuses].sort(compareValues(sortBy, direction));
+
+    res.status(200).json({completeStudentStatusesSorted, totalCount, totalPages});
   } catch (error) {
     res.status(500).json({
       message: `error getting students statuses for trip id: ${tripId}`,

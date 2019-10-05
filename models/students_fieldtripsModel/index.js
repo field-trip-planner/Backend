@@ -10,11 +10,48 @@ const getStudentsFieldtripsById = id => {
     .first();
 };
 
-const getStudentStatusesByTripId = tripId => {
-  return db("students_field_trips")
-    .where({ field_trip_id: tripId })
-    .returning("*");
+// const getStudentStatusesByTripId = async tripId => {
+//   const students = await db("students_field_trips")
+//     .where({ field_trip_id: tripId }).count().first();
+//
+//   const totalStudent = Number(students.count);
+//   console.log('totalStudents', totalStudent);
+//
+//   const studentsPerPage = await db("students_field_trips")
+//     .where({ field_trip_id: tripId }).offset(2).limit(5);
+//
+//   console.log('studentsPerPage', studentsPerPage);
+//
+//   return db("students_field_trips")
+//     .where({ field_trip_id: tripId })
+//     .returning("*");
+// };
+
+const getStudentStatusesByTripIdPaginated = async (tripId, page, perPage) => {
+  const offset = (page - 1) * perPage;
+
+  const studentStatuses = await db("students_field_trips")
+    .where({ field_trip_id: tripId }).offset(offset).limit(perPage);
+
+    console.log('STUDENTSPerPage:::', studentStatuses);
+
+  // getting the count
+  const countObject = await db("students_field_trips")
+    .where({ field_trip_id: tripId }).count().first();
+  const totalCount = Number(countObject.count);
+
+  console.log('totalStudents', totalCount);
+
+  const totalPages = Math.ceil(totalCount / Number(perPage));
+
+  return {
+    totalCount,
+    studentStatuses,
+    totalPages
+  }
 };
+
+
 
 const getStudentsFieldtripsByStudentId = id => {
   return db("students_field_trips")
@@ -54,9 +91,10 @@ const deleteStudentsFieldtrips = id => {
 module.exports = {
   getStudentsFieldtrips,
   getStudentsFieldtripsById,
-  getStudentStatusesByTripId,
+  // getStudentStatusesByTripId,
   getStudentsFieldtripsByStudentId,
   addStudentsFieldtrips,
   updateStudentsFieldtrips,
-  deleteStudentsFieldtrips
+  deleteStudentsFieldtrips,
+  getStudentStatusesByTripIdPaginated
 };
