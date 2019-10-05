@@ -10,43 +10,16 @@ const getStudentsFieldtripsById = id => {
     .first();
 };
 
-// const getStudentStatusesByTripId = async tripId => {
-//   const students = await db("students_field_trips")
-//     .where({ field_trip_id: tripId }).count().first();
-//
-//   const totalStudent = Number(students.count);
-//   console.log('totalStudents', totalStudent);
-//
-//   const studentsPerPage = await db("students_field_trips")
-//     .where({ field_trip_id: tripId }).offset(2).limit(5);
-//
-//   console.log('studentsPerPage', studentsPerPage);
-//
-//   return db("students_field_trips")
-//     .where({ field_trip_id: tripId })
-//     .returning("*");
-// };
-
 const getStudentStatusesByTripIdPaginated = async (tripId, page, perPage, sortBy, direction ) => {
   const offset = (page - 1) * perPage;
 
   const completeStudentStatusesSorted = await db("students_field_trips")
     .join('students', 'students_field_trips.student_id', 'students.id')
-    .select('students_field_trips.id as id',
-      'students.id as student_id',
-      'students.first_name',
-      'students.last_name',
-      'students.school_id',
-      'students.created_at',
-      'students_field_trips.paid_status',
-      'students_field_trips.permission_status',
-      'students_field_trips.supplies_status'
+    .select('students.*',
+      'students_field_trips.*', // students_field_trips.id overwrites student.id
+      'students.id as student_id'
     )
     .where({ field_trip_id: tripId }).orderBy(sortBy, direction).offset(offset).limit(perPage);
-
-  console.log('ALLSTUDENTSStatusesJOINSELECT-ASC-BY-DATE:::', completeStudentStatusesSorted);
-
-  // => Desc = newest to oldest
 
   // getting the count
   const countObject = await db("students_field_trips")
@@ -64,11 +37,14 @@ const getStudentStatusesByTripIdPaginated = async (tripId, page, perPage, sortBy
   }
 };
 
-
-
 const getStudentsFieldtripsByStudentId = id => {
   return db("students_field_trips")
     .where({ student_id : id });
+};
+
+const getStudentsFieldtripStatusById = id => {
+  return db("students_field_trips")
+    .where({ id : id }).first();
 };
 
 const addStudentsFieldtrips = async studentStatus => {
@@ -105,6 +81,7 @@ module.exports = {
   getStudentsFieldtrips,
   getStudentsFieldtripsById,
   // getStudentStatusesByTripId,
+  getStudentsFieldtripStatusById,
   getStudentsFieldtripsByStudentId,
   addStudentsFieldtrips,
   updateStudentsFieldtrips,
