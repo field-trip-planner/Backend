@@ -91,5 +91,23 @@ router.put("/:studentStatusId", async (req, res) => {
   }
 });
 
+router.delete("/:studentStatusId", async (req, res) => {
+  const { studentStatusId } = req.params;
+
+  try {
+    const deletedStudent = await db.deleteStudentsFieldtrips(studentStatusId);
+
+    res.status(200).json({
+      deletedStudent,
+      message: `Student with fieldtrip id ${studentStatusId} has been deleted`
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: `error deleting student from field trip`,
+      error
+    })
+  }
+})
 
 module.exports = router;
