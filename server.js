@@ -46,6 +46,7 @@ const loginRouter = require("./routes/auth/login");
 const logoutRouter = require("./routes/auth/logout");
 const registerRouter = require("./routes/auth/register");
 const chaperonesRouter = require("./routes/chaperones");
+const chaperonesFieldTripsRouter = require("./routes/chaperones_field_trips");
 
 // router obj is isolated instance
 server.use("/fieldtrips", mw.checkAuth, FieldTripRouter);
@@ -58,6 +59,7 @@ server.use("/login", loginRouter);
 server.use("/logout", logoutRouter);
 server.use("/register", registerRouter);
 server.use("/chaperones", chaperonesRouter);
+server.use("/chaperones_field_trips", chaperonesFieldTripsRouter)
 
 server.get("/", (req, res) => {
   res.status(200).json("Server is up");

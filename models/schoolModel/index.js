@@ -33,6 +33,7 @@ const addSchool = async school => {
     .insert(school)
     .returning("*");
   const [newSchool] = schoolObject;
+  console.log(newSchool)
   return newSchool;
 };
 

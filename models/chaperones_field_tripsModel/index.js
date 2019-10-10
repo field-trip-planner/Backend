@@ -6,7 +6,13 @@ function getChaperoneFieldTripsById(id){
   .where({ user_id: id });
 }
 
+function deleteChaperoneFieldTripByChaperoneId(id){
+  return db("chaperones_field_trips")
+
+}
+
 
 module.exports = {
   getChaperoneFieldTripsById,
+  deleteChaperoneFieldTripByChaperoneId
 };
