@@ -18,27 +18,26 @@ router.get("/", async (req, res) => {
 
 router.get("/:tripId/statuses", async (req, res) => {
   const { tripId } = req.params;
+  const {
+    page = 1,
+    perPage = 5,
+    sortBy = 'last_name',
+    direction = 'asc'
+  } = req.query;
 
   try {
-    const studentStatuses = await db.getStudentStatusesByTripId(tripId); // 1
+    const {
+      totalCount,
+      completeStudentStatusesSorted,
+      totalPages
+    } = await db.getStudentStatusesByTripIdPaginated(tripId, page, perPage, sortBy, direction);
 
-    const getStudentFromDb = async studentStatus => {
-      const student = await dbStudents.getStudentById(studentStatus.student_id);
-
-      return {
-        ...student,
-        student_id: student.id,
-        ...studentStatus
-      }
-    } // 4
-
-    const getAllStudentStatusesData = async () => {
-      return await Promise.all(studentStatuses.map(studentStatus => getStudentFromDb(studentStatus)))
-    } // 3
-
-    const completeStudentStatuses = await getAllStudentStatusesData(); // 2
-
-    res.status(200).json(completeStudentStatuses);
+    res.status(200).json({
+      completeStudentStatusesSorted,
+      totalCount,
+      totalPages,
+      perPage: Number(perPage)
+    });
   } catch (error) {
     res.status(500).json({
       message: `error getting students statuses for trip id: ${tripId}`,
@@ -71,14 +70,18 @@ router.put("/:studentStatusId", async (req, res) => {
   const updatedStatus = req.body;
   const { studentStatusId } = req.params;
 
-  console.log("studentStatus::", updatedStatus);
-  console.log("studentStatusId::", studentStatusId);
+  // console.log("studentStatus::", updatedStatus);
+  // console.log("studentStatusId::", studentStatusId);
   try {
     const studentStatus = await db.updateStudentsFieldtrips(studentStatusId, updatedStatus);
-
     console.log("studentStatus::", studentStatus);
 
-    res.status(200).json(studentStatus);
+    const isGoing = studentStatus.paid_status &&
+      studentStatus.permission_status &&
+      studentStatus.supplies_status;
+    const studentStatusWithUpdatedGoingStatus = await db.updateStudentsFieldtrips(studentStatusId, {going_status: isGoing})
+
+    res.status(200).json(studentStatusWithUpdatedGoingStatus);
 
   } catch (error) {
     res.status(500).json({
@@ -88,5 +91,23 @@ router.put("/:studentStatusId", async (req, res) => {
   }
 });
 
+router.delete("/:studentStatusId", async (req, res) => {
+  const { studentStatusId } = req.params;
+
+  try {
+    const deletedStudent = await db.deleteStudentsFieldtrips(studentStatusId);
+
+    res.status(200).json({
+      deletedStudent,
+      message: `Student with fieldtrip id ${studentStatusId} has been deleted`
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: `error deleting student from field trip`,
+      error
+    })
+  }
+})
 
 module.exports = router;

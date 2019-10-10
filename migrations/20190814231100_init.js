@@ -41,6 +41,10 @@ exports.up = async function(knex) {
       .uuid("parent_id")
       .references("id")
       .inTable("users");
+    tbl
+      .timestamp("created_at")
+      .notNullable()
+      .defaultTo(knex.fn.now());
   });
 
   await knex.schema.createTable("field_trips", tbl => {
