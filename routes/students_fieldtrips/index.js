@@ -16,6 +16,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:tripId/statuses/search", async (req, res) => {
+  const { tripId } = req.params;
+  const {
+    query = ''
+  } = req.query;
+
+  try {
+    const {
+      searchedStudentStatus,
+    } = await db.searchStudentStatuses(tripId, query);
+
+    res.status(200).json({
+      searchedStudentStatus,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: `error getting student for trip id: ${tripId}`,
+      error: error
+    });
+  }
+});
+
 router.get("/:tripId/statuses", async (req, res) => {
   const { tripId } = req.params;
   const {

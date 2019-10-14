@@ -11,6 +11,27 @@ const getStudentsFieldtripsById = id => {
     .first();
 };
 
+const searchStudentStatuses = async (tripId, query) => {
+  const searchedStudentStatus = await db("students_field_trips")
+    .join('students', 'students_field_trips.student_id', 'students.id')
+    .select('students.*',
+      'students_field_trips.*', // students_field_trips.id overwrites student.id
+      'students.id as student_id'
+    )
+    .where({field_trip_id: tripId})
+    .andWhereRaw("LOWER(first_name) LIKE '%' || LOWER(?) || '%' ", query)
+    .orWhereRaw("LOWER(last_name) LIKE '%' || LOWER(?) || '%' ", query);
+  // to keep in mind:
+  /*
+  https://github.com/knex/knex/issues/233
+  Queries using LOWER(column) will not use indexes created for that column, and so a full table scan will be performed, which is obviously bad for all search use cases. To avoid this is to create a new index on LOWER(column).
+   */
+  console.log('SEARCHING-STUDENTS::', searchedStudentStatus);
+  return {
+    searchedStudentStatus
+  }
+};
+
 const getStudentStatusesByTripIdPaginated = async (tripId, page, perPage, sortBy, direction ) => {
   const offset = (page - 1) * perPage;
 
@@ -92,5 +113,6 @@ module.exports = {
   addStudentsFieldtrips,
   updateStudentsFieldtrips,
   deleteStudentsFieldtrips,
-  getStudentStatusesByTripIdPaginated
+  getStudentStatusesByTripIdPaginated,
+  searchStudentStatuses
 };
