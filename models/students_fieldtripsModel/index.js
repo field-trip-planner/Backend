@@ -11,7 +11,7 @@ const getStudentsFieldtripsById = id => {
     .first();
 };
 
-const searchStudentStatuses = async (tripId, query) => {
+const searchStudentStatuses = async (tripId, query, perPage) => {
   const searchedStudentStatus = await db("students_field_trips")
     .join('students', 'students_field_trips.student_id', 'students.id')
     .select('students.*',
@@ -20,43 +20,104 @@ const searchStudentStatuses = async (tripId, query) => {
     )
     .where({field_trip_id: tripId})
     .andWhereRaw("LOWER(first_name) LIKE '%' || LOWER(?) || '%' ", query)
-    .orWhereRaw("LOWER(last_name) LIKE '%' || LOWER(?) || '%' ", query);
-  // to keep in mind:
-  /*
-  https://github.com/knex/knex/issues/233
-  Queries using LOWER(column) will not use indexes created for that column, and so a full table scan will be performed, which is obviously bad for all search use cases. To avoid this is to create a new index on LOWER(column).
-   */
-  console.log('SEARCHING-STUDENTS::', searchedStudentStatus);
-  return {
-    searchedStudentStatus
-  }
-};
+    .orWhereRaw("LOWER(last_name) LIKE '%' || LOWER(?) || '%' ", query)
 
-const getStudentStatusesByTripIdPaginated = async (tripId, page, perPage, sortBy, direction ) => {
-  const offset = (page - 1) * perPage;
-
-  const completeStudentStatusesSorted = await db("students_field_trips")
+  const searchedStudentsPerPageResult = await db("students_field_trips")
     .join('students', 'students_field_trips.student_id', 'students.id')
     .select('students.*',
       'students_field_trips.*', // students_field_trips.id overwrites student.id
       'students.id as student_id'
     )
-    .where({ field_trip_id: tripId }).orderBy(sortBy, direction).offset(offset).limit(perPage);
+    .where({field_trip_id: tripId})
+    .andWhereRaw("LOWER(first_name) LIKE '%' || LOWER(?) || '%' ", query)
+    .orWhereRaw("LOWER(last_name) LIKE '%' || LOWER(?) || '%' ", query)
+    .limit(perPage);
 
-  // getting the count
-  const countObject = await db("students_field_trips")
-    .where({ field_trip_id: tripId }).count().first();
-  const totalCount = Number(countObject.count);
+  // to keep in mind:
+  /*
+  https://github.com/knex/knex/issues/233
+  Queries using LOWER(column) will not use indexes created for that column, and so a full table scan will be performed, which is obviously bad for all search use cases. To avoid this is to create a new index on LOWER(column).
+   */
 
-  console.log('totalStudents', totalCount);
-
-  const totalPages = Math.ceil(totalCount / Number(perPage));
+  // getting total count for the search result
+  const countOnSearchResult = searchedStudentStatus.length;
+  const totalPagesOnSearchResult = Math.ceil(countOnSearchResult / Number(perPage));
 
   return {
-    totalCount,
-    completeStudentStatusesSorted,
-    totalPages
+    searchedStudentStatus: searchedStudentsPerPageResult,
+    countOnSearchResult,
+    totalPagesOnSearchResult
   }
+};
+
+const getStudentStatusesByTripIdPaginated = async (
+  tripId,
+  page,
+  perPage,
+  sortBy,
+  direction,
+  query
+) => {
+  const offset = (page - 1) * perPage;
+
+  if (!query) {
+    const completeStudentStatusesSorted = await db("students_field_trips")
+      .join('students', 'students_field_trips.student_id', 'students.id')
+      .select('students.*',
+        'students_field_trips.*', // students_field_trips.id overwrites student.id
+        'students.id as student_id'
+      )
+      .where({ field_trip_id: tripId })
+      .orderBy(sortBy, direction).offset(offset).limit(perPage);
+
+    // getting the count
+    const countObject = await db("students_field_trips")
+      .where({ field_trip_id: tripId }).count().first();
+    const totalCount = Number(countObject.count);
+
+    console.log('totalStudents', totalCount);
+
+    const totalPages = Math.ceil(totalCount / Number(perPage));
+
+    return {
+      totalCount,
+      completeStudentStatusesSorted,
+      totalPages
+    }
+  } else {
+
+    const searchedStudentStatus = await db("students_field_trips")
+      .join('students', 'students_field_trips.student_id', 'students.id')
+      .select('students.*',
+        'students_field_trips.*', // students_field_trips.id overwrites student.id
+        'students.id as student_id'
+      )
+      .where({field_trip_id: tripId})
+      .andWhereRaw("LOWER(first_name) LIKE '%' || LOWER(?) || '%' ", query)
+      .orWhereRaw("LOWER(last_name) LIKE '%' || LOWER(?) || '%' ", query);
+
+    const searchedStudentsPerPageResult = await db("students_field_trips")
+      .join('students', 'students_field_trips.student_id', 'students.id')
+      .select('students.*',
+        'students_field_trips.*', // students_field_trips.id overwrites student.id
+        'students.id as student_id'
+      )
+      .where({field_trip_id: tripId})
+      .andWhereRaw("LOWER(first_name) LIKE '%' || LOWER(?) || '%' ", query)
+      .orWhereRaw("LOWER(last_name) LIKE '%' || LOWER(?) || '%' ", query)
+      .orderBy(sortBy, direction)
+      .offset(offset).limit(perPage);
+
+    const countOnSearchResult = searchedStudentStatus.length;
+    const totalPagesOnSearchResult = Math.ceil(countOnSearchResult / Number(perPage));
+
+    return {
+      completeStudentStatusesSorted: searchedStudentsPerPageResult,
+      totalCount: countOnSearchResult,
+      totalPages: totalPagesOnSearchResult
+    }
+  }
+
 };
 
 const getStudentsFieldtripsByStudentId = id => {

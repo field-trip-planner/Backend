@@ -19,16 +19,21 @@ router.get("/", async (req, res) => {
 router.get("/:tripId/statuses/search", async (req, res) => {
   const { tripId } = req.params;
   const {
-    query = ''
+    query = '',
+    perPage = 5,
   } = req.query;
 
   try {
     const {
       searchedStudentStatus,
-    } = await db.searchStudentStatuses(tripId, query);
+      countOnSearchResult,
+      totalPagesOnSearchResult
+    } = await db.searchStudentStatuses(tripId, query, perPage);
 
     res.status(200).json({
       searchedStudentStatus,
+      countOnSearchResult,
+      totalPagesOnSearchResult
     });
   } catch (error) {
     res.status(500).json({
@@ -44,7 +49,8 @@ router.get("/:tripId/statuses", async (req, res) => {
     page = 1,
     perPage = 5,
     sortBy = 'last_name',
-    direction = 'asc'
+    direction = 'asc',
+    query = ''
   } = req.query;
 
   try {
@@ -52,7 +58,7 @@ router.get("/:tripId/statuses", async (req, res) => {
       totalCount,
       completeStudentStatusesSorted,
       totalPages
-    } = await db.getStudentStatusesByTripIdPaginated(tripId, page, perPage, sortBy, direction);
+    } = await db.getStudentStatusesByTripIdPaginated(tripId, page, perPage, sortBy, direction, query);
 
     res.status(200).json({
       completeStudentStatusesSorted,
