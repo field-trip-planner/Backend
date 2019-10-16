@@ -25,7 +25,7 @@ const searchStudentStatuses = async (tripId, query, perPage) => {
   const searchedStudentsPerPageResult = await db("students_field_trips")
     .join('students', 'students_field_trips.student_id', 'students.id')
     .select('students.*',
-      'students_field_trips.*', // students_field_trips.id overwrites student.id
+      'students_field_trips.*',
       'students.id as student_id'
     )
     .where({field_trip_id: tripId})
@@ -70,17 +70,28 @@ const getStudentStatusesByTripIdPaginated = async (
       .where({ field_trip_id: tripId })
       .orderBy(sortBy, direction).offset(offset).limit(perPage);
 
-    // getting the count
+    const incompleteStudentStatus = await db("students_field_trips")
+      .join('students', 'students_field_trips.student_id', 'students.id')
+      .select('students.*',
+        'students_field_trips.*',
+        'students.id as student_id'
+      )
+      .where({ field_trip_id: tripId })
+      .andWhere('going_status', '=', 'false');
+    const statusIncompleteCount = incompleteStudentStatus.length;
+    console.log('statusIncompleteCount:', statusIncompleteCount);
+
+    // getting total count of students in the students_field_trips table
     const countObject = await db("students_field_trips")
       .where({ field_trip_id: tripId }).count().first();
     const totalCount = Number(countObject.count);
 
     console.log('totalStudents', totalCount);
-
     const totalPages = Math.ceil(totalCount / Number(perPage));
 
     return {
       totalCount,
+      statusIncompleteCount,
       completeStudentStatusesSorted,
       totalPages
     }
@@ -89,7 +100,7 @@ const getStudentStatusesByTripIdPaginated = async (
     const searchedStudentStatus = await db("students_field_trips")
       .join('students', 'students_field_trips.student_id', 'students.id')
       .select('students.*',
-        'students_field_trips.*', // students_field_trips.id overwrites student.id
+        'students_field_trips.*',
         'students.id as student_id'
       )
       .where({field_trip_id: tripId})
@@ -99,7 +110,7 @@ const getStudentStatusesByTripIdPaginated = async (
     const searchedStudentsPerPageResult = await db("students_field_trips")
       .join('students', 'students_field_trips.student_id', 'students.id')
       .select('students.*',
-        'students_field_trips.*', // students_field_trips.id overwrites student.id
+        'students_field_trips.*',
         'students.id as student_id'
       )
       .where({field_trip_id: tripId})

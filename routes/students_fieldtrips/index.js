@@ -56,12 +56,14 @@ router.get("/:tripId/statuses", async (req, res) => {
   try {
     const {
       totalCount,
+      statusIncompleteCount,
       completeStudentStatusesSorted,
       totalPages
     } = await db.getStudentStatusesByTripIdPaginated(tripId, page, perPage, sortBy, direction, query);
 
     res.status(200).json({
       completeStudentStatusesSorted,
+      statusIncompleteCount,
       totalCount,
       totalPages,
       perPage: Number(perPage)
