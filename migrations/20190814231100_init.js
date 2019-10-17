@@ -64,6 +64,8 @@ exports.up = async function(knex) {
     tbl.string("cost");
     tbl.string("field_trip_details");
     tbl.string("chaperoneTasks");
+    tbl.text("image");
+    tbl.text("largeImage");
   });
   await knex.schema.createTable("chaperones_field_trips", tbl => {
     tbl.uuid("id").primary();
