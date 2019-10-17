@@ -59,7 +59,7 @@ server.use("/login", loginRouter);
 server.use("/logout", logoutRouter);
 server.use("/register", registerRouter);
 server.use("/chaperones", chaperonesRouter);
-server.use("/chaperones_field_trips", chaperonesFieldTripsRouter)
+server.use("/chaperones_field_trips", mw.checkAuth, chaperonesFieldTripsRouter)
 
 server.get("/", (req, res) => {
   res.status(200).json("Server is up");
