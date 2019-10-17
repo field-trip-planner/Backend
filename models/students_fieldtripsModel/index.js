@@ -19,8 +19,10 @@ const searchStudentStatuses = async (tripId, query, perPage) => {
       'students.id as student_id'
     )
     .where({field_trip_id: tripId})
-    .andWhereRaw("LOWER(first_name) LIKE '%' || LOWER(?) || '%' ", query)
-    .orWhereRaw("LOWER(last_name) LIKE '%' || LOWER(?) || '%' ", query)
+    .where((builder)=> {
+      builder.where("first_name", "ilike", `%${query}%`)
+        .orWhere("last_name", "ilike", `%${query}%`);
+    });
 
   const searchedStudentsPerPageResult = await db("students_field_trips")
     .join('students', 'students_field_trips.student_id', 'students.id')
@@ -29,8 +31,10 @@ const searchStudentStatuses = async (tripId, query, perPage) => {
       'students.id as student_id'
     )
     .where({field_trip_id: tripId})
-    .andWhereRaw("LOWER(first_name) LIKE '%' || LOWER(?) || '%' ", query)
-    .orWhereRaw("LOWER(last_name) LIKE '%' || LOWER(?) || '%' ", query)
+    .where((builder)=> {
+      builder.where("first_name", "ilike", `%${query}%`)
+        .orWhere("last_name", "ilike", `%${query}%`);
+    })
     .limit(perPage);
 
   // to keep in mind:
