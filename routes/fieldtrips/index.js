@@ -35,8 +35,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-
-
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -62,7 +60,16 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { name, date, address, supplies, cost, field_trip_details } = req.body;
+  const {
+    name,
+    date,
+    address,
+    supplies,
+    cost,
+    field_trip_details,
+    image,
+    largeImage
+  } = req.body;
   const newTrip = { id: uuid(), ...req.body };
 
   try {
